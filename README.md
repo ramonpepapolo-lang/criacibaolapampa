@@ -27,6 +27,11 @@ without touching code:
 Both live in `data/site.json`, which the site reads on every visit. The admin page saves by
 committing that file through the GitHub API, and GitHub Pages republishes in about a minute.
 
+It also shows **visitor numbers** (all time, today, last 7 and 30 days, and a daily chart) from
+GoatCounter (`criacibaolapampa.goatcounter.com`, no cookies). The site loads GoatCounter's
+`count.js`; the admin page reads its public counter JSON (`/counter/TOTAL.json?end=DATE`), which
+requires "Allow adding visitor counts on your website" in the GoatCounter settings.
+
 The admin password only opens the page. Saving also needs a GitHub key (a personal access token
 with the `public_repo` scope), entered once per device and stored only in that browser, encrypted
 with the password. The password check lives in public code, so the GitHub key is what really

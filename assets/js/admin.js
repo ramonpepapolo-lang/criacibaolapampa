@@ -134,6 +134,7 @@
       }
       password = pw;
       $('password').value = '';
+      try { if (localStorage.getItem('skipgc') === null) localStorage.setItem('skipgc', 't'); } catch (err) {}
       say(msg, '');
       var blob = stored();
       if (!blob) { show('view-connect'); return; }
@@ -216,6 +217,7 @@
 
   function load() {
     show('view-edit');
+    loadStats();
     say($('save-msg'), 'Loading...', 'Cargando...');
     readFile().then(function (f) {
       fileSha = f.sha;
@@ -276,6 +278,186 @@
       e.preventDefault();
       e.returnValue = '';
     }
+  });
+
+  /* ---------- Visitor stats (GoatCounter) ---------- */
+
+  // GoatCounter's public counter: CORS-enabled JSON, needs "Allow adding visitor counts"
+  // in the GoatCounter settings. ?end=DATE counts every hour up to DATE 00:00 UTC, so a
+  // day's visitors are the difference between two consecutive running totals.
+  var COUNTER = 'https://criacibaolapampa.goatcounter.com/counter/TOTAL.json';
+  var DAYS = 30;
+  var statsLoaded = false;
+
+  function isoUTC(d) { return d.toISOString().slice(0, 10); }
+  function num(s) { return Number(String(s).replace(/[^0-9]/g, '')) || 0; }
+  function fmt(n) { return new Intl.NumberFormat(lang() === 'es' ? 'es-AR' : 'en-GB').format(n); }
+  function dayLabel(iso, long) {
+    return new Intl.DateTimeFormat(lang() === 'es' ? 'es-AR' : 'en-GB', long
+      ? { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' }
+      : { day: 'numeric', month: 'short', timeZone: 'UTC' }).format(new Date(iso + 'T00:00:00Z'));
+  }
+
+  function counter(query) {
+    return fetch(COUNTER + query, { cache: 'no-store' }).then(function (r) {
+      if (r.status === 403) throw 'setting';
+      return r.json().then(function (j) {
+        if (j.count === undefined) throw 'missing';
+        return num(j.count);
+      }, function () { throw 'missing'; });
+    });
+  }
+
+  function loadStats() {
+    if (statsLoaded) return;
+    var msg = $('stats-msg');
+    say(msg, 'Loading visitor numbers...', 'Cargando las visitas...');
+    try { $('skip-me').checked = localStorage.getItem('skipgc') === 't'; } catch (e) {}
+
+    var today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+    var ends = [];
+    for (var i = DAYS - 1; i >= -1; i--) ends.push(isoUTC(new Date(today.getTime() - i * 864e5)));
+
+    Promise.all([counter('')].concat(ends.map(function (d) { return counter('?end=' + d); })))
+      .then(function (res) {
+        var all = res[0], cum = res.slice(1), days = [];
+        for (var k = 0; k < DAYS; k++) days.push({ date: ends[k], n: Math.max(0, cum[k + 1] - cum[k]) });
+        statsLoaded = true;
+        say(msg, '');
+        $('stats-setup').hidden = true;
+        $('stats-body').hidden = false;
+        renderStats(all, days);
+      })
+      .catch(function (err) {
+        $('stats-body').hidden = true;
+        if (err === 'setting') {
+          say(msg, 'Almost there: in GoatCounter open <b>Settings</b>, tick <b>Allow adding visitor counts on your website</b> and save.', 'Casi listo: en GoatCounter abrí <b>Settings</b>, marcá <b>Allow adding visitor counts on your website</b> y guardá.', 'error');
+          $('stats-setup').hidden = true;
+        } else {
+          say(msg, 'Visitor stats are not connected yet.', 'Las estadísticas de visitas todavía no están conectadas.');
+          $('stats-setup').hidden = false;
+        }
+      });
+  }
+
+  var lastStats = null;
+  function renderStats(all, days) {
+    lastStats = [all, days];
+    var sum = function (n) { return days.slice(-n).reduce(function (a, d) { return a + d.n; }, 0); };
+    $('st-all').textContent = fmt(all);
+    $('st-today').textContent = fmt(days[days.length - 1].n);
+    $('st-7').textContent = fmt(sum(7));
+    $('st-30').textContent = fmt(sum(30));
+
+    var max = Math.max.apply(null, days.map(function (d) { return d.n; }));
+    var top = niceCeil(max);
+    var plot = $('chart');
+    plot.textContent = '';
+    [0, top / 2, top].forEach(function (v, idx) {
+      if (idx === 1 && v % 1) return;
+      var g = document.createElement('div');
+      g.className = 'chart-grid' + (v === 0 ? ' is-base' : '');
+      g.style.bottom = (v / top * 100) + '%';
+      var s = document.createElement('span');
+      s.textContent = fmt(v);
+      g.appendChild(s);
+      plot.appendChild(g);
+    });
+
+    var bars = document.createElement('div');
+    bars.className = 'chart-bars';
+    var peak = -1;
+    days.forEach(function (d, i) { if (d.n > 0 && (peak < 0 || d.n >= days[peak].n)) peak = i; });
+    var rows = $('chart-rows');
+    rows.textContent = '';
+    days.forEach(function (d, i) {
+      var col = document.createElement('button');
+      col.type = 'button';
+      col.className = 'chart-col';
+      col.setAttribute('aria-label', dayLabel(d.date, true) + ': ' + fmt(d.n));
+      if (i === peak) {
+        var cap = document.createElement('span');
+        cap.className = 'chart-cap';
+        cap.textContent = fmt(d.n);
+        col.appendChild(cap);
+      }
+      var bar = document.createElement('span');
+      bar.className = 'chart-bar';
+      bar.style.height = (d.n / top * 100) + '%';
+      col.appendChild(bar);
+      var showTip = function () { tip(col, d); };
+      col.addEventListener('pointerenter', showTip);
+      col.addEventListener('focus', showTip);
+      col.addEventListener('click', showTip);
+      col.addEventListener('pointerleave', hideTip);
+      col.addEventListener('blur', hideTip);
+      bars.appendChild(col);
+
+      var tr = document.createElement('tr');
+      var td1 = document.createElement('td');
+      var td2 = document.createElement('td');
+      td1.textContent = dayLabel(d.date, true);
+      td2.textContent = fmt(d.n);
+      tr.appendChild(td1);
+      tr.appendChild(td2);
+      rows.insertBefore(tr, rows.firstChild); // newest first
+    });
+    plot.appendChild(bars);
+
+    var x = $('chart-x');
+    x.textContent = '';
+    [0, Math.floor((days.length - 1) / 2), days.length - 1].forEach(function (i) {
+      var s = document.createElement('span');
+      s.textContent = i === days.length - 1 ? (lang() === 'es' ? 'Hoy' : 'Today') : dayLabel(days[i].date);
+      x.appendChild(s);
+    });
+  }
+
+  function niceCeil(v) {
+    if (v <= 4) return 4;
+    var p = Math.pow(10, Math.floor(Math.log10(v)));
+    var steps = [1, 2, 2.5, 5, 10];
+    for (var i = 0; i < steps.length; i++) if (steps[i] * p >= v) return steps[i] * p;
+    return 10 * p;
+  }
+
+  function tip(col, d) {
+    var t = $('chart-tip');
+    var fig = t.parentNode.getBoundingClientRect();
+    var c = col.getBoundingClientRect();
+    var bar = col.querySelector('.chart-bar').getBoundingClientRect();
+    t.textContent = '';
+    var strong = document.createElement('strong');
+    strong.textContent = fmt(d.n) + ' ' + (lang() === 'es' ? (d.n === 1 ? 'visita' : 'visitas') : (d.n === 1 ? 'visitor' : 'visitors'));
+    var span = document.createElement('span');
+    span.textContent = dayLabel(d.date, true);
+    t.appendChild(strong);
+    t.appendChild(span);
+    t.hidden = false;
+    var left = c.left + c.width / 2 - fig.left;
+    var half = t.offsetWidth / 2;
+    left = Math.max(half, Math.min(fig.width - half, left));
+    t.style.left = left + 'px';
+    t.style.top = (Math.min(bar.top, c.bottom - 2) - fig.top) + 'px';
+    document.querySelectorAll('.chart-col.is-active').forEach(function (e) { e.classList.remove('is-active'); });
+    col.classList.add('is-active');
+  }
+  function hideTip() {
+    $('chart-tip').hidden = true;
+    document.querySelectorAll('.chart-col.is-active').forEach(function (e) { e.classList.remove('is-active'); });
+  }
+
+  // re-render numbers and dates when the language switches
+  document.querySelectorAll('[data-set-lang]').forEach(function (b) {
+    b.addEventListener('click', function () { if (lastStats) renderStats(lastStats[0], lastStats[1]); });
+  });
+
+  $('skip-me').addEventListener('change', function () {
+    try {
+      // GoatCounter skips counting only when this is 't'; 'f' remembers the owner chose to be counted
+      localStorage.setItem('skipgc', this.checked ? 't' : 'f');
+    } catch (e) {}
   });
 
   show('view-login');

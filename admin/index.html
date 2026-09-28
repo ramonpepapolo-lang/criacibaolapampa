@@ -234,6 +234,73 @@
         <button class="btn btn-primary" type="button" id="save"><span lang="en">Save changes</span><span lang="es">Guardar cambios</span></button>
       </div>
 
+      <div class="admin-card" id="stats">
+        <p class="eyebrow"><span lang="en">Website</span><span lang="es">Página</span></p>
+        <h2><span lang="en">Visitors</span><span lang="es">Visitas</span></h2>
+        <p class="admin-msg" id="stats-msg" role="status"></p>
+
+        <div id="stats-body" hidden>
+          <div class="stat-hero">
+            <span class="stat-label"><span lang="en">All time</span><span lang="es">Desde el inicio</span></span>
+            <span class="stat-value" id="st-all"></span>
+          </div>
+          <div class="stat-tiles">
+            <div class="stat"><span class="stat-label"><span lang="en">Today</span><span lang="es">Hoy</span></span><span class="stat-value" id="st-today"></span></div>
+            <div class="stat"><span class="stat-label"><span lang="en">Last 7 days</span><span lang="es">Últimos 7 días</span></span><span class="stat-value" id="st-7"></span></div>
+            <div class="stat"><span class="stat-label"><span lang="en">Last 30 days</span><span lang="es">Últimos 30 días</span></span><span class="stat-value" id="st-30"></span></div>
+          </div>
+
+          <figure class="chart">
+            <figcaption><span lang="en">Visitors per day, last 30 days</span><span lang="es">Visitas por día, últimos 30 días</span></figcaption>
+            <div class="chart-plot" id="chart"></div>
+            <div class="chart-x" id="chart-x" aria-hidden="true"></div>
+            <div class="chart-tip" id="chart-tip" hidden></div>
+          </figure>
+          <details class="chart-table">
+            <summary><span lang="en">Show as a table</span><span lang="es">Ver como tabla</span></summary>
+            <table>
+              <thead><tr><th><span lang="en">Day</span><span lang="es">Día</span></th><th><span lang="en">Visitors</span><span lang="es">Visitas</span></th></tr></thead>
+              <tbody id="chart-rows"></tbody>
+            </table>
+          </details>
+
+          <p class="stats-note">
+            <span lang="en">Counts people, not page loads. Numbers refresh every few hours.</span>
+            <span lang="es">Cuenta personas, no recargas de página. Los números se actualizan cada pocas horas.</span>
+            <a href="https://criacibaolapampa.goatcounter.com" target="_blank" rel="noopener"><span lang="en">Full stats on GoatCounter</span><span lang="es">Estadísticas completas en GoatCounter</span></a>
+          </p>
+          <label class="check">
+            <input type="checkbox" id="skip-me">
+            <span><span lang="en">Don't count my own visits on this device</span><span lang="es">No contar mis propias visitas en este dispositivo</span></span>
+          </label>
+        </div>
+
+        <div id="stats-setup" hidden>
+          <p class="admin-lede">
+            <span lang="en">Visitor stats come from GoatCounter, a free, privacy-friendly counter (no cookies, so no cookie banner needed). It needs a free account, created once:</span>
+            <span lang="es">Las estadísticas vienen de GoatCounter, un contador gratis y respetuoso de la privacidad (sin cookies, así que no hace falta aviso de cookies). Necesita una cuenta gratis, que se crea una sola vez:</span>
+          </p>
+          <ol class="admin-steps">
+            <li>
+              <span lang="en">Open GoatCounter and sign up:</span><span lang="es">Abrí GoatCounter y registrate:</span>
+              <a class="btn btn-ghost btn-sm" href="https://www.goatcounter.com/signup" target="_blank" rel="noopener"><span lang="en">Sign up on GoatCounter</span><span lang="es">Registrarse en GoatCounter</span></a>
+            </li>
+            <li>
+              <span lang="en">In <b>Code</b> write exactly <code>criacibaolapampa</code>. Add your email and a password, and create the account.</span>
+              <span lang="es">En <b>Code</b> escribí exactamente <code>criacibaolapampa</code>. Poné tu email y una contraseña, y creá la cuenta.</span>
+            </li>
+            <li>
+              <span lang="en">In GoatCounter open <b>Settings</b>, tick <b>Allow adding visitor counts on your website</b> and click <b>Save</b>.</span>
+              <span lang="es">En GoatCounter abrí <b>Settings</b>, marcá <b>Allow adding visitor counts on your website</b> y hacé clic en <b>Save</b>.</span>
+            </li>
+          </ol>
+          <p class="admin-lede">
+            <span lang="en">That's it. Visits start counting straight away and show up here.</span>
+            <span lang="es">Listo. Las visitas se empiezan a contar enseguida y aparecen acá.</span>
+          </p>
+        </div>
+      </div>
+
       <p class="admin-foot">
         <a href="../"><span lang="en">View website</span><span lang="es">Ver la página</span></a>
         <button type="button" id="lock"><span lang="en">Lock</span><span lang="es">Cerrar</span></button>
