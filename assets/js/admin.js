@@ -178,29 +178,99 @@
 
   /* ---------- 3. Editor ---------- */
 
+  // The horses built into the page, in page order: [{ slug, name, thumb }]
+  var STATIC_HORSES = JSON.parse($('static-horses').textContent);
+  var added = [];  // horses added from this page, newest first (site.json "horses")
+  var extra = {};  // any other fields in site.json, kept as they are
+
   function today() {
     var d = new Date();
     return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
   }
 
-  function current() {
+  function allHorses() {
+    return added.map(function (a) { return { slug: a.slug, name: a.name, thumb: a.thumb }; }).concat(STATIC_HORSES);
+  }
+
+  function soldNow() {
     var sold = [];
-    document.querySelectorAll('.sold-list input').forEach(function (c) { if (c.checked) sold.push(c.value); });
-    return { updated: $('updated').value || today(), sold: sold };
+    document.querySelectorAll('#sold-list input').forEach(function (c) { if (c.checked) sold.push(c.value); });
+    return sold;
   }
-  function serialize(data) {
-    return '{\n  "updated": ' + JSON.stringify(data.updated) + ',\n  "sold": ' + JSON.stringify(data.sold).replace(/","/g, '", "') + '\n}\n';
+
+  function current() {
+    var data = {};
+    Object.keys(extra).forEach(function (k) { data[k] = extra[k]; });
+    data.updated = $('updated').value || today();
+    data.sold = soldNow();
+    data.announcement = { en: $('ann-en').value.trim(), es: $('ann-es').value.trim() };
+    data.horses = added;
+    return data;
   }
+  function serialize(data) { return JSON.stringify(data, null, 2) + '\n'; }
   function markDirty() {
     var dirty = serialize(current()) !== saved;
     if (dirty) say($('save-msg'), 'You have unsaved changes.', 'Tenés cambios sin guardar.');
     else say($('save-msg'), 'Everything is saved.', 'Todo está guardado.');
   }
 
+  function text(tag, cls, value) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (value !== undefined) e.textContent = value;
+    return e;
+  }
+  function biHtml(en, es) { return '<span lang="en">' + en + '</span><span lang="es">' + es + '</span>'; }
+
+  function renderSoldList(sold) {
+    var ul = $('sold-list');
+    ul.textContent = '';
+    allHorses().forEach(function (h) {
+      var li = document.createElement('li');
+      var label = document.createElement('label');
+      var im = text('img');
+      im.src = '../' + h.thumb;
+      im.alt = '';
+      im.width = 72;
+      im.height = 60;
+      im.loading = 'lazy';
+      var name = text('span', 'name');
+      name.appendChild(text('small', '', 'Cibao'));
+      name.appendChild(document.createTextNode(h.name));
+      var sw = text('span', 'switch');
+      var input = text('input');
+      input.type = 'checkbox';
+      input.value = h.slug;
+      input.checked = sold.indexOf(h.slug) !== -1;
+      input.addEventListener('change', markDirty);
+      var track = text('span', 'track');
+      track.setAttribute('aria-hidden', 'true');
+      var state = text('span', 'state');
+      state.setAttribute('aria-hidden', 'true');
+      state.innerHTML = '<span class="off">' + biHtml('For sale', 'En venta') + '</span><span class="on">' + biHtml('Sold', 'Vendida') + '</span>';
+      sw.appendChild(input);
+      sw.appendChild(track);
+      sw.appendChild(state);
+      label.appendChild(im);
+      label.appendChild(name);
+      label.appendChild(sw);
+      li.appendChild(label);
+      ul.appendChild(li);
+    });
+  }
+
   function fill(data) {
+    extra = {};
+    Object.keys(data).forEach(function (k) {
+      if (['updated', 'sold', 'announcement', 'horses'].indexOf(k) === -1) extra[k] = data[k];
+    });
+    added = Array.isArray(data.horses) ? data.horses : [];
     $('updated').value = data.updated || today();
-    var sold = data.sold || [];
-    document.querySelectorAll('.sold-list input').forEach(function (c) { c.checked = sold.indexOf(c.value) !== -1; });
+    var a = data.announcement || {};
+    $('ann-en').value = a.en || '';
+    $('ann-es').value = a.es || '';
+    renderSoldList(data.sold || []);
+    renderAddedList();
     saved = serialize(current());
   }
 
@@ -236,20 +306,20 @@
 
   function save(retry) {
     var btn = $('save');
-    var text = serialize(current());
+    var body_ = serialize(current());
     btn.disabled = true;
     say($('save-msg'), 'Saving...', 'Guardando...');
-    var body = { message: 'Update from the admin page', content: b64(enc.encode(text)), branch: BRANCH };
+    var body = { message: 'Update from the admin page', content: b64(enc.encode(body_)), branch: BRANCH };
     if (fileSha) body.sha = fileSha;
-    gh('/contents/' + FILE, { method: 'PUT', body: body }).then(function (r) {
+    return gh('/contents/' + FILE, { method: 'PUT', body: body }).then(function (r) {
       if ((r.status === 409 || r.status === 422) && !retry) {
         // the file changed since it was loaded: pick up the latest version and save on top
-        return readFile().then(function (f) { fileSha = f.sha; return save(true); });
+        return readFile().then(function (f) { fileSha = f.sha; btn.disabled = false; return save(true); });
       }
       if (!r.ok) throw r.status;
       return r.json().then(function (j) {
         fileSha = j.content.sha;
-        saved = text;
+        saved = body_;
         say($('save-msg'), 'Saved. The website will show it in about a minute.', 'Guardado. La página lo va a mostrar en más o menos un minuto.', 'ok');
       });
     }).catch(function () {
@@ -259,8 +329,281 @@
 
   $('today').addEventListener('click', function () { $('updated').value = today(); markDirty(); });
   $('updated').addEventListener('change', markDirty);
-  document.querySelectorAll('.sold-list input').forEach(function (c) { c.addEventListener('change', markDirty); });
+  $('ann-en').addEventListener('input', markDirty);
+  $('ann-es').addEventListener('input', markDirty);
+  $('ann-clear').addEventListener('click', function () { $('ann-en').value = ''; $('ann-es').value = ''; markDirty(); });
   $('save').addEventListener('click', function () { save(false); });
+
+  /* ---------- Several files in one change (photos + site.json) ---------- */
+
+  function ghJson(path, opts) {
+    return gh(path, opts).then(function (r) {
+      if (r.status === 401) throw 'auth';
+      if (!r.ok) { var e = new Error('GitHub ' + r.status); e.status = r.status; throw e; }
+      return r.json();
+    });
+  }
+
+  // files: [{ path, b64 } | { path, text } | { path, remove: true }]; returns { path: blobSha }
+  function commitFiles(files, message, attempt) {
+    var blobs = {};
+    return ghJson('/git/ref/heads/' + BRANCH).then(function (ref) {
+      var parent = ref.object.sha;
+      return ghJson('/git/commits/' + parent).then(function (base) {
+        return Promise.all(files.map(function (f) {
+          if (f.remove) return { path: f.path, mode: '100644', type: 'blob', sha: null };
+          var content = f.b64 || b64(enc.encode(f.text));
+          return ghJson('/git/blobs', { method: 'POST', body: { content: content, encoding: 'base64' } }).then(function (b) {
+            blobs[f.path] = b.sha;
+            return { path: f.path, mode: '100644', type: 'blob', sha: b.sha };
+          });
+        })).then(function (tree) {
+          return ghJson('/git/trees', { method: 'POST', body: { base_tree: base.tree.sha, tree: tree } });
+        }).then(function (t) {
+          return ghJson('/git/commits', { method: 'POST', body: { message: message, tree: t.sha, parents: [parent] } });
+        }).then(function (c) {
+          return ghJson('/git/refs/heads/' + BRANCH, { method: 'PATCH', body: { sha: c.sha } });
+        });
+      });
+    }).then(function () { return blobs; }, function (err) {
+      // the website changed at the same moment (e.g. another device saved): try once more
+      if (err && err.status === 422 && !attempt) return commitFiles(files, message, 1);
+      throw err;
+    });
+  }
+
+  /* ---------- Add a horse ---------- */
+
+  var MONTHS = {
+    en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    es: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+  };
+  (function fillDateSelects() {
+    var now = new Date();
+    MONTHS.en.forEach(function (m, i) {
+      var o = text('option', '', m + ' / ' + MONTHS.es[i]);
+      o.value = ('0' + (i + 1)).slice(-2);
+      if (i === now.getMonth()) o.selected = true;
+      $('h-month').appendChild(o);
+    });
+    for (var y = now.getFullYear() + 1; y >= 2015; y--) {
+      var o = text('option', '', String(y));
+      o.value = String(y);
+      if (y === now.getFullYear()) o.selected = true;
+      $('h-year').appendChild(o);
+    }
+  })();
+
+  var photo = null; // { full: Blob, card: Blob, w, h }
+
+  function loadImage(file) {
+    return new Promise(function (resolve, reject) {
+      var im = new Image();
+      im.onload = function () { resolve(im); };
+      im.onerror = function () { reject('format'); };
+      im.src = URL.createObjectURL(file);
+    });
+  }
+  function drawTo(im, sx, sy, sw, sh, w, h) {
+    var c = document.createElement('canvas');
+    c.width = w;
+    c.height = h;
+    var ctx = c.getContext('2d');
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(im, sx, sy, sw, sh, 0, 0, w, h);
+    return c;
+  }
+  function jpeg(canvas) {
+    return new Promise(function (resolve) { canvas.toBlob(resolve, 'image/jpeg', 0.8); });
+  }
+  function blobB64(blob) {
+    return new Promise(function (resolve) {
+      var r = new FileReader();
+      r.onload = function () { resolve(String(r.result).split(',')[1]); };
+      r.readAsDataURL(blob);
+    });
+  }
+  // Big photo for the detail view (max 1600px) and a 6:5 card crop from the middle.
+  function makeImages(im) {
+    var W = im.naturalWidth, H = im.naturalHeight, R = 6 / 5;
+    var s = Math.min(1, 1600 / Math.max(W, H));
+    var fw = Math.round(W * s), fh = Math.round(H * s);
+    var cw = W / H > R ? H * R : W;
+    var ch = W / H > R ? H : W / R;
+    var full = drawTo(im, 0, 0, W, H, fw, fh);
+    var card = drawTo(im, (W - cw) / 2, (H - ch) / 2, cw, ch, 800, 667);
+    return Promise.all([jpeg(full), jpeg(card)]).then(function (b) {
+      return { full: b[0], card: b[1], w: fw, h: fh, preview: card.toDataURL('image/jpeg', 0.7) };
+    });
+  }
+
+  $('h-photo').addEventListener('change', function () {
+    var file = this.files && this.files[0];
+    photo = null;
+    $('h-preview').hidden = true;
+    if (!file) return;
+    say($('add-msg'), 'Preparing the photo...', 'Preparando la foto...');
+    loadImage(file).then(makeImages).then(function (p) {
+      photo = p;
+      $('h-preview').querySelector('img').src = p.preview;
+      $('h-preview').hidden = false;
+      say($('add-msg'), '');
+    }).catch(function () {
+      say($('add-msg'), 'This photo could not be opened. Try a JPG or PNG, or take a screenshot of the photo and use that.', 'No se pudo abrir esta foto. Probá con una JPG o PNG, o sacale una captura de pantalla y usá esa.', 'error');
+    });
+  });
+
+  function slugify(name) {
+    return name.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'horse';
+  }
+  function uniqueSlug(base) {
+    var taken = allHorses().map(function (h) { return h.slug; });
+    var s = base, n = 2;
+    while (taken.indexOf(s) !== -1) s = base + '-' + n++;
+    return s;
+  }
+
+  function commitError(msgEl, err) {
+    if (err === 'auth') {
+      say(msgEl, 'The GitHub key stopped working. Lock the page and connect this device again.', 'La clave de GitHub dejó de funcionar. Cerrá y conectá este dispositivo de nuevo.', 'error');
+    } else {
+      say(msgEl, 'Could not save. Check your connection and try again.', 'No se pudo guardar. Revisá tu conexión y probá de nuevo.', 'error');
+    }
+  }
+
+  $('add-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var msg = $('add-msg');
+    var name = $('h-name').value.trim().replace(/^cibao\s+/i, '');
+    var age = parseInt($('h-age').value, 10);
+    var mallet = parseInt($('h-mallet').value, 10);
+    if (!name) { say(msg, 'Write the horse\'s name.', 'Escribí el nombre del caballo.', 'error'); $('h-name').focus(); return; }
+    if (!(age > 0 && age < 40)) { say(msg, 'Write the age in years.', 'Escribí la edad en años.', 'error'); $('h-age').focus(); return; }
+    if (!(mallet > 0)) { say(msg, 'Write the mallet size.', 'Escribí el taco.', 'error'); $('h-mallet').focus(); return; }
+    if (!photo) { say(msg, 'Choose a photo.', 'Elegí una foto.', 'error'); return; }
+
+    var slug = uniqueSlug(slugify(name));
+    var stamp = Date.now().toString(36);
+    var horse = {
+      slug: slug,
+      name: name,
+      sex: $('h-sex').value,
+      age: age,
+      purchased: $('h-year').value + '-' + $('h-month').value,
+      mallet: String(mallet),
+      photo: 'assets/img/horses/added/' + slug + '-' + stamp + '.jpg',
+      thumb: 'assets/img/horses/added/' + slug + '-' + stamp + '-card.jpg',
+      w: photo.w,
+      h: photo.h,
+      added: today()
+    };
+    var btn = $('h-add');
+    btn.disabled = true;
+    say(msg, 'Uploading...', 'Subiendo...');
+    var before = added;
+    added = [horse].concat(added);
+    var data = serialize(current());
+    Promise.all([blobB64(photo.full), blobB64(photo.card)]).then(function (b) {
+      return commitFiles([
+        { path: horse.photo, b64: b[0] },
+        { path: horse.thumb, b64: b[1] },
+        { path: FILE, text: data }
+      ], 'Add Cibao ' + name + ' from the admin page');
+    }).then(function (blobs) {
+      fileSha = blobs[FILE];
+      saved = data;
+      renderSoldList(soldNow());
+      renderAddedList();
+      $('add-form').reset();
+      fillDefaults();
+      photo = null;
+      $('h-preview').hidden = true;
+      say(msg, 'Cibao ' + name + ' was added. It will be on the website in about a minute.', 'Se agregó Cibao ' + name + '. Va a estar en la página en más o menos un minuto.', 'ok');
+      markDirty();
+      rankingLoaded = false;
+      if (statsLoaded) loadRanking();
+    }).catch(function (err) {
+      added = before;
+      commitError(msg, err);
+    }).then(function () { btn.disabled = false; });
+  });
+
+  function fillDefaults() {
+    var now = new Date();
+    $('h-month').value = ('0' + (now.getMonth() + 1)).slice(-2);
+    $('h-year').value = String(now.getFullYear());
+  }
+
+  function renderAddedList() {
+    var ul = $('added-list');
+    ul.textContent = '';
+    $('added-wrap').hidden = added.length === 0;
+    added.forEach(function (h) {
+      var li = document.createElement('li');
+      var im = text('img');
+      im.src = '../' + h.thumb;
+      im.alt = '';
+      im.width = 72;
+      im.height = 60;
+      var name = text('span', 'name');
+      name.appendChild(text('small', '', 'Cibao'));
+      name.appendChild(document.createTextNode(h.name));
+      var btn = text('button', 'btn btn-ghost btn-sm');
+      btn.type = 'button';
+      btn.innerHTML = biHtml('Remove', 'Quitar');
+      var armed = null;
+      btn.addEventListener('click', function () {
+        if (!armed) {
+          btn.innerHTML = biHtml('Tap again to remove', 'Tocá de nuevo para quitar');
+          btn.classList.add('is-armed');
+          armed = setTimeout(function () {
+            armed = null;
+            btn.innerHTML = biHtml('Remove', 'Quitar');
+            btn.classList.remove('is-armed');
+          }, 4000);
+          return;
+        }
+        clearTimeout(armed);
+        removeHorse(h, btn);
+      });
+      li.appendChild(im);
+      li.appendChild(name);
+      li.appendChild(btn);
+      ul.appendChild(li);
+    });
+  }
+
+  function removeHorse(h, btn) {
+    var msg = $('add-msg');
+    btn.disabled = true;
+    say(msg, 'Removing...', 'Quitando...');
+    var before = added;
+    added = added.filter(function (a) { return a.slug !== h.slug; });
+    var soldBefore = soldNow();
+    var data = current();
+    data.sold = soldBefore.filter(function (s) { return s !== h.slug; });
+    var textOut = serialize(data);
+    var files = [{ path: FILE, text: textOut }];
+    var withPhotos = files.concat([{ path: h.photo, remove: true }, { path: h.thumb, remove: true }]);
+    commitFiles(withPhotos, 'Remove Cibao ' + h.name + ' from the admin page').catch(function (err) {
+      if (err === 'auth') throw err;
+      return commitFiles(files, 'Remove Cibao ' + h.name + ' from the admin page'); // photos already gone
+    }).then(function (blobs) {
+      fileSha = blobs[FILE];
+      saved = textOut;
+      renderSoldList(data.sold);
+      renderAddedList();
+      say(msg, 'Cibao ' + h.name + ' was removed from the website.', 'Se quitó Cibao ' + h.name + ' de la página.', 'ok');
+      markDirty();
+      rankingLoaded = false;
+      if (statsLoaded) loadRanking();
+    }).catch(function (err) {
+      added = before;
+      btn.disabled = false;
+      commitError(msg, err);
+    });
+  }
 
   function lock() {
     password = null;
@@ -324,6 +667,7 @@
         var all = res[0], cum = res.slice(1), days = [];
         for (var k = 0; k < DAYS; k++) days.push({ date: ends[k], n: Math.max(0, cum[k + 1] - cum[k]) });
         statsLoaded = true;
+        loadRanking();
         say(msg, '');
         $('stats-setup').hidden = true;
         $('stats-body').hidden = false;
@@ -448,9 +792,80 @@
     document.querySelectorAll('.chart-col.is-active').forEach(function (e) { e.classList.remove('is-active'); });
   }
 
+  /* ---------- Most viewed horses and enquiries (GoatCounter events from the site) ---------- */
+
+  var GC = 'https://criacibaolapampa.goatcounter.com/counter/';
+  var rankingLoaded = false;
+  var lastRanking = null;
+
+  function pathCount(path) {
+    // a path nobody has triggered yet answers 404 with a count of 0
+    return fetch(GC + encodeURIComponent(path) + '.json', { cache: 'no-store' })
+      .then(function (r) { return r.json(); })
+      .then(function (j) { return num(j.count); }, function () { return 0; });
+  }
+
+  function loadRanking() {
+    if (rankingLoaded) return;
+    rankingLoaded = true;
+    $('ranking').hidden = false;
+    say($('rank-msg'), 'Loading...', 'Cargando...');
+    var list = allHorses();
+    Promise.all(list.map(function (h) {
+      return Promise.all([pathCount('view-' + h.slug), pathCount('enquiry-' + h.slug)]);
+    }).concat([pathCount('enquiry-general')])).then(function (res) {
+      var general = res.pop(); // the last request is the general email count
+      var rows = list.map(function (h, i) { return { h: h, views: res[i][0], enq: res[i][1] }; });
+      renderRanking(rows, general);
+    });
+  }
+
+  function renderRanking(rows, general) {
+    lastRanking = [rows, general];
+    rows = rows.slice().sort(function (a, b) { return b.views - a.views || b.enq - a.enq; });
+    var max = Math.max.apply(null, rows.map(function (r) { return r.views; }).concat([1]));
+    var total = rows.reduce(function (a, r) { return a + r.views + r.enq; }, 0);
+    if (!total) say($('rank-msg'), 'No views yet. They appear here as people open the horses\' cards.', 'Todavía no hay vistas. Van a aparecer acá a medida que la gente abra las fichas.');
+    else say($('rank-msg'), '');
+    var ol = $('rank-list');
+    ol.textContent = '';
+    rows.forEach(function (r) {
+      var li = document.createElement('li');
+      var im = text('img');
+      im.src = '../' + r.h.thumb;
+      im.alt = '';
+      im.width = 44;
+      im.height = 37;
+      im.loading = 'lazy';
+      var mid = text('div', 'rank-main');
+      var name = text('span', 'rank-name');
+      name.appendChild(text('small', '', 'Cibao '));
+      name.appendChild(document.createTextNode(r.h.name));
+      var track = text('span', 'rank-track');
+      var bar = text('span', 'rank-bar');
+      bar.style.width = (r.views / max * 100) + '%';
+      if (!r.views) bar.hidden = true;
+      track.appendChild(bar);
+      mid.appendChild(name);
+      mid.appendChild(track);
+      var v = text('span', 'rank-num', fmt(r.views));
+      var q = text('span', 'rank-num', fmt(r.enq));
+      li.setAttribute('aria-label', 'Cibao ' + r.h.name + ': ' + r.views + (lang() === 'es' ? ' vistas, ' : ' views, ') + r.enq + (lang() === 'es' ? ' consultas' : ' enquiries'));
+      li.appendChild(im);
+      li.appendChild(mid);
+      li.appendChild(v);
+      li.appendChild(q);
+      ol.appendChild(li);
+    });
+    $('rank-general').innerHTML = biHtml('General email clicks (not about one horse): ', 'Clics de email generales (no sobre un caballo): ') + '<b>' + fmt(general) + '</b>';
+  }
+
   // re-render numbers and dates when the language switches
   document.querySelectorAll('[data-set-lang]').forEach(function (b) {
-    b.addEventListener('click', function () { if (lastStats) renderStats(lastStats[0], lastStats[1]); });
+    b.addEventListener('click', function () {
+      if (lastStats) renderStats(lastStats[0], lastStats[1]);
+      if (lastRanking) renderRanking(lastRanking[0], lastRanking[1]);
+    });
   });
 
   $('skip-me').addEventListener('change', function () {

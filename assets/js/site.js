@@ -4,7 +4,9 @@
   var root = document.documentElement;
   var current = null; // index of the horse open in the dialog
   var opener = null;
-  var siteStatus = null; // { updated: 'YYYY-MM-DD', sold: [slug, ...] } from data/site.json
+  // data/site.json, edited on the admin page:
+  // { updated: 'YYYY-MM-DD', sold: [slug], announcement: { en, es }, horses: [added horses] }
+  var siteStatus = null;
   var EMAIL = 'info@criacibaolapampa.com';
   var TITLES = {
     en: 'Cría Cibao La Pampa · Polo Horses, La Pampa, Argentina',
@@ -32,6 +34,7 @@
     });
     if (current !== null) fillDialog(current);
     renderUpdated();
+    renderAnnouncement();
   }
 
   document.querySelectorAll('[data-set-lang]').forEach(function (b) {
@@ -104,9 +107,20 @@
     try { history.replaceState(null, '', hash); } catch (e) {}
   }
 
+  // Anonymous counts for the admin page (GoatCounter events; skipped on the owner's devices)
+  function track(path, title) {
+    try {
+      if (window.goatcounter && window.goatcounter.count) {
+        window.goatcounter.count({ path: path, title: title, event: true });
+      }
+    } catch (e) {}
+  }
+  function viewed(i) { track('view-' + horses[i].slug, 'Viewed Cibao ' + horses[i].name); }
+
   function openHorse(i, from) {
     opener = from || null;
     fillDialog(i);
+    viewed(i);
     if (!dialog.open) {
       if (typeof dialog.showModal === 'function') dialog.showModal();
       else dialog.setAttribute('open', '');
@@ -118,6 +132,7 @@
     if (current === null) return;
     var i = (current + d + horses.length) % horses.length;
     fillDialog(i);
+    viewed(i);
     setHash('#horse-' + horses[i].slug);
   }
 
@@ -137,8 +152,22 @@
     opener = null;
   });
 
-  document.querySelectorAll('.horse-open').forEach(function (b) {
-    b.addEventListener('click', function () { openHorse(Number(b.getAttribute('data-index')), b); });
+  function indexOf(slug) {
+    for (var i = 0; i < horses.length; i++) if (horses[i].slug === slug) return i;
+    return -1;
+  }
+  // one listener for every card, including horses added later from the admin page
+  document.querySelector('.horse-grid').addEventListener('click', function (e) {
+    var b = e.target.closest('.horse-open');
+    if (!b) return;
+    var i = indexOf(b.closest('.horse').id.replace(/^horse-/, ''));
+    if (i !== -1) openHorse(i, b);
+  });
+  document.getElementById('dlg-mail').addEventListener('click', function () {
+    if (current !== null) track('enquiry-' + horses[current].slug, 'Enquiry: Cibao ' + horses[current].name);
+  });
+  document.querySelectorAll('[data-mailto]').forEach(function (a) {
+    a.addEventListener('click', function () { track('enquiry-general', 'Enquiry: general'); });
   });
   dialog.querySelector('[data-close]').addEventListener('click', closeDialog);
   dialog.querySelectorAll('[data-step]').forEach(function (b) {
@@ -166,16 +195,129 @@
   // links like criacibaolapampa.com/#horse-drogba open that horse directly
   function fromHash() {
     var m = /^#horse-(.+)$/.exec(location.hash);
-    if (!m) return;
-    for (var i = 0; i < horses.length; i++) {
-      if (horses[i].slug === m[1]) { openHorse(i); return; }
-    }
+    if (!m || dialog.open) return;
+    var i = indexOf(m[1]);
+    if (i !== -1) openHorse(i);
   }
 
   /* ---------- Sold horses and "last updated" (set on the admin page) ---------- */
 
+  var MONTHS = {
+    en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    es: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+  };
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined) e.textContent = text;
+    return e;
+  }
+  function biEl(tag, en, es) {
+    var wrap = document.createDocumentFragment();
+    var a = el(tag, '', en); a.lang = 'en';
+    var b = el(tag, '', es); b.lang = 'es';
+    wrap.appendChild(a);
+    wrap.appendChild(b);
+    return wrap;
+  }
+
+  // Horses added on the admin page: same card as the others, newest first.
+  function addedHorse(a) {
+    var m = /^(\d{4})-(\d{2})$/.exec(a.purchased || '');
+    var age = Number(a.age) || 0;
+    return {
+      slug: a.slug,
+      name: a.name,
+      full: a.photo,
+      w: a.w || 1600,
+      h: a.h || 1200,
+      thumb: a.thumb,
+      sex: a.sex === 'm' ? ['Gelding', 'Macho'] : ['Mare', 'Hembra'],
+      age: [age + (age === 1 ? ' year' : ' years'), age + (age === 1 ? ' año' : ' años')],
+      purchased: m ? [MONTHS.en[Number(m[2]) - 1] + ' ' + m[1], MONTHS.es[Number(m[2]) - 1] + ' ' + m[1]] : ['', ''],
+      mallet: String(a.mallet || '')
+    };
+  }
+
+  function horseCard(h) {
+    var li = el('li', 'horse');
+    li.id = 'horse-' + h.slug;
+    var photo = el('div', 'horse-photo');
+    var im = el('img');
+    im.src = h.thumb;
+    im.width = 640;
+    im.height = 533;
+    im.loading = 'lazy';
+    im.decoding = 'async';
+    im.alt = 'Cibao ' + h.name;
+    photo.appendChild(im);
+    var body = el('div', 'horse-body');
+    var h3 = el('h3');
+    var btn = el('button', 'horse-open');
+    btn.type = 'button';
+    btn.setAttribute('aria-haspopup', 'dialog');
+    btn.appendChild(el('small', '', 'Cibao'));
+    btn.appendChild(document.createTextNode(h.name));
+    h3.appendChild(btn);
+    var dl = el('dl', 'meta');
+    [[['Sex', 'Sexo'], h.sex], [['Age', 'Edad'], h.age], [['Purchased', 'Compra'], h.purchased], [['Mallet size', 'Taco'], [h.mallet, h.mallet]]]
+      .forEach(function (row) {
+        var d = el('div');
+        var dt = el('dt'); dt.appendChild(biEl('span', row[0][0], row[0][1]));
+        var dd = el('dd'); dd.appendChild(biEl('span', row[1][0], row[1][1]));
+        d.appendChild(dt);
+        d.appendChild(dd);
+        dl.appendChild(d);
+      });
+    var more = el('span', 'horse-more');
+    more.setAttribute('aria-hidden', 'true');
+    more.appendChild(biEl('span', 'View details', 'Ver ficha'));
+    body.appendChild(h3);
+    body.appendChild(dl);
+    body.appendChild(more);
+    li.appendChild(photo);
+    li.appendChild(body);
+    return li;
+  }
+
+  function renderAdded(list) {
+    var grid = document.querySelector('.horse-grid');
+    grid.querySelectorAll('.horse.is-added').forEach(function (e) { e.remove(); });
+    var bySlug = {};
+    horses.forEach(function (h) { bySlug[h.slug] = h; });
+    (list || []).slice().reverse().forEach(function (a) {
+      if (!a || !a.slug || !a.photo || document.getElementById('horse-' + a.slug)) return;
+      var h = addedHorse(a);
+      bySlug[h.slug] = h;
+      var card = horseCard(h);
+      card.classList.add('is-added');
+      grid.insertBefore(card, grid.firstChild);
+    });
+    // keep next / previous in the same order as the cards on the page
+    horses = Array.prototype.map.call(grid.querySelectorAll('.horse[id^="horse-"]'), function (c) {
+      return bySlug[c.id.replace(/^horse-/, '')];
+    }).filter(Boolean);
+    var count = document.querySelector('.horses-count');
+    if (count) count.textContent = horses.length;
+  }
+
+  function renderAnnouncement() {
+    var bar = document.getElementById('announce');
+    if (!bar || !siteStatus) return;
+    var a = siteStatus.announcement || {};
+    var en = String(a.en || '').trim();
+    var es = String(a.es || '').trim();
+    var text = lang() === 'es' ? (es || en) : (en || es);
+    bar.hidden = !text;
+    bar.querySelector('p').textContent = text;
+    root.style.setProperty('--announce-h', text ? bar.offsetHeight + 'px' : '0px');
+  }
+  window.addEventListener('resize', renderAnnouncement);
+
   function applyStatus(s) {
     siteStatus = s || { sold: [] };
+    renderAdded(siteStatus.horses);
     var sold = siteStatus.sold || [];
     horses.forEach(function (h) {
       h.sold = sold.indexOf(h.slug) !== -1;
@@ -194,6 +336,8 @@
     });
     if (current !== null) fillDialog(current);
     renderUpdated();
+    renderAnnouncement();
+    fromHash(); // a link to a horse added on the admin page can only open once it is loaded
   }
 
   function renderUpdated() {

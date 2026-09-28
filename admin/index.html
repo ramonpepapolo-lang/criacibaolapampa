@@ -98,140 +98,82 @@
       </div>
 
       <div class="admin-card">
+        <p class="eyebrow"><span lang="en">Top of the website</span><span lang="es">Arriba de la página</span></p>
+        <h2><span lang="en">Announcement bar</span><span lang="es">Barra de anuncio</span></h2>
+        <p class="admin-lede">
+          <span lang="en">Write a short message to show in a bar at the top of the website. Leave both boxes empty and no bar appears. If you only fill in one language, it is shown in both.</span>
+          <span lang="es">Escribí un mensaje corto para mostrar en una barra arriba de la página. Si dejás las dos casillas vacías, no aparece ninguna barra. Si completás un solo idioma, se muestra en los dos.</span>
+        </p>
+        <div class="admin-form">
+          <label for="ann-en"><span lang="en">English</span><span lang="es">Inglés</span></label>
+          <input id="ann-en" type="text" maxlength="160" placeholder="New horses available in March">
+          <label for="ann-es"><span lang="en">Spanish</span><span lang="es">Español</span></label>
+          <input id="ann-es" type="text" maxlength="160" placeholder="Nuevos caballos disponibles en marzo">
+          <div><button class="btn btn-ghost btn-sm" type="button" id="ann-clear"><span lang="en">Remove the bar</span><span lang="es">Quitar la barra</span></button></div>
+        </div>
+      </div>
+
+      <div class="admin-card">
         <p class="eyebrow"><span lang="en">Horses</span><span lang="es">Caballos</span></p>
         <h2><span lang="en">Sold</span><span lang="es">Vendidos</span></h2>
         <p class="admin-lede">
           <span lang="en">Switch a horse on to show the red SOLD / VENDIDA band on its photo. The card stays on the website.</span>
           <span lang="es">Activá un caballo para que su foto muestre la banda roja VENDIDA / SOLD. La ficha sigue en la página.</span>
         </p>
-        <ul class="sold-list">
-          <li>
-            <label>
-              <img src="../assets/img/horses/drogba-640.webp" alt="" width="72" height="60" loading="lazy">
-              <span class="name"><small>Cibao</small>Drogba</span>
-              <span class="switch">
-                <input type="checkbox" value="drogba">
-                <span class="track" aria-hidden="true"></span>
-                <span class="state" aria-hidden="true"><span class="off"><span lang="en">For sale</span><span lang="es">En venta</span></span><span class="on"><span lang="en">Sold</span><span lang="es">Vendida</span></span></span>
-              </span>
-            </label>
-          </li>
-          <li>
-            <label>
-              <img src="../assets/img/horses/latia-ramona-640.webp" alt="" width="72" height="60" loading="lazy">
-              <span class="name"><small>Cibao</small>Latia Ramona</span>
-              <span class="switch">
-                <input type="checkbox" value="latia-ramona">
-                <span class="track" aria-hidden="true"></span>
-                <span class="state" aria-hidden="true"><span class="off"><span lang="en">For sale</span><span lang="es">En venta</span></span><span class="on"><span lang="en">Sold</span><span lang="es">Vendida</span></span></span>
-              </span>
-            </label>
-          </li>
-          <li>
-            <label>
-              <img src="../assets/img/horses/big-bay-640.webp" alt="" width="72" height="60" loading="lazy">
-              <span class="name"><small>Cibao</small>Big Bay</span>
-              <span class="switch">
-                <input type="checkbox" value="big-bay">
-                <span class="track" aria-hidden="true"></span>
-                <span class="state" aria-hidden="true"><span class="off"><span lang="en">For sale</span><span lang="es">En venta</span></span><span class="on"><span lang="en">Sold</span><span lang="es">Vendida</span></span></span>
-              </span>
-            </label>
-          </li>
-          <li>
-            <label>
-              <img src="../assets/img/horses/cuartetera-640.webp" alt="" width="72" height="60" loading="lazy">
-              <span class="name"><small>Cibao</small>Cuartetera</span>
-              <span class="switch">
-                <input type="checkbox" value="cuartetera">
-                <span class="track" aria-hidden="true"></span>
-                <span class="state" aria-hidden="true"><span class="off"><span lang="en">For sale</span><span lang="es">En venta</span></span><span class="on"><span lang="en">Sold</span><span lang="es">Vendida</span></span></span>
-              </span>
-            </label>
-          </li>
-          <li>
-            <label>
-              <img src="../assets/img/horses/gustava-640.webp" alt="" width="72" height="60" loading="lazy">
-              <span class="name"><small>Cibao</small>Gustava</span>
-              <span class="switch">
-                <input type="checkbox" value="gustava">
-                <span class="track" aria-hidden="true"></span>
-                <span class="state" aria-hidden="true"><span class="off"><span lang="en">For sale</span><span lang="es">En venta</span></span><span class="on"><span lang="en">Sold</span><span lang="es">Vendida</span></span></span>
-              </span>
-            </label>
-          </li>
-          <li>
-            <label>
-              <img src="../assets/img/horses/nevadito-640.webp" alt="" width="72" height="60" loading="lazy">
-              <span class="name"><small>Cibao</small>Nevadito</span>
-              <span class="switch">
-                <input type="checkbox" value="nevadito">
-                <span class="track" aria-hidden="true"></span>
-                <span class="state" aria-hidden="true"><span class="off"><span lang="en">For sale</span><span lang="es">En venta</span></span><span class="on"><span lang="en">Sold</span><span lang="es">Vendida</span></span></span>
-              </span>
-            </label>
-          </li>
-          <li>
-            <label>
-              <img src="../assets/img/horses/canita-voladora-640.webp" alt="" width="72" height="60" loading="lazy">
-              <span class="name"><small>Cibao</small>Oro Cañita Voladora</span>
-              <span class="switch">
-                <input type="checkbox" value="canita-voladora">
-                <span class="track" aria-hidden="true"></span>
-                <span class="state" aria-hidden="true"><span class="off"><span lang="en">For sale</span><span lang="es">En venta</span></span><span class="on"><span lang="en">Sold</span><span lang="es">Vendida</span></span></span>
-              </span>
-            </label>
-          </li>
-          <li>
-            <label>
-              <img src="../assets/img/horses/jazz-640.webp" alt="" width="72" height="60" loading="lazy">
-              <span class="name"><small>Cibao</small>Jazz</span>
-              <span class="switch">
-                <input type="checkbox" value="jazz">
-                <span class="track" aria-hidden="true"></span>
-                <span class="state" aria-hidden="true"><span class="off"><span lang="en">For sale</span><span lang="es">En venta</span></span><span class="on"><span lang="en">Sold</span><span lang="es">Vendida</span></span></span>
-              </span>
-            </label>
-          </li>
-          <li>
-            <label>
-              <img src="../assets/img/horses/minifalda-640.webp" alt="" width="72" height="60" loading="lazy">
-              <span class="name"><small>Cibao</small>Minifalda</span>
-              <span class="switch">
-                <input type="checkbox" value="minifalda">
-                <span class="track" aria-hidden="true"></span>
-                <span class="state" aria-hidden="true"><span class="off"><span lang="en">For sale</span><span lang="es">En venta</span></span><span class="on"><span lang="en">Sold</span><span lang="es">Vendida</span></span></span>
-              </span>
-            </label>
-          </li>
-          <li>
-            <label>
-              <img src="../assets/img/horses/callaway-640.webp" alt="" width="72" height="60" loading="lazy">
-              <span class="name"><small>Cibao</small>Callaway</span>
-              <span class="switch">
-                <input type="checkbox" value="callaway">
-                <span class="track" aria-hidden="true"></span>
-                <span class="state" aria-hidden="true"><span class="off"><span lang="en">For sale</span><span lang="es">En venta</span></span><span class="on"><span lang="en">Sold</span><span lang="es">Vendida</span></span></span>
-              </span>
-            </label>
-          </li>
-          <li>
-            <label>
-              <img src="../assets/img/horses/cuaresma-640.webp" alt="" width="72" height="60" loading="lazy">
-              <span class="name"><small>Cibao</small>Cuaresma</span>
-              <span class="switch">
-                <input type="checkbox" value="cuaresma">
-                <span class="track" aria-hidden="true"></span>
-                <span class="state" aria-hidden="true"><span class="off"><span lang="en">For sale</span><span lang="es">En venta</span></span><span class="on"><span lang="en">Sold</span><span lang="es">Vendida</span></span></span>
-              </span>
-            </label>
-          </li>
-        </ul>
+        <ul class="sold-list" id="sold-list"></ul>
       </div>
 
       <div class="admin-bar">
         <p class="admin-msg" id="save-msg" role="status"></p>
         <button class="btn btn-primary" type="button" id="save"><span lang="en">Save changes</span><span lang="es">Guardar cambios</span></button>
+      </div>
+
+      <div class="admin-card" id="add-horse">
+        <p class="eyebrow"><span lang="en">Horses</span><span lang="es">Caballos</span></p>
+        <h2><span lang="en">Add a horse</span><span lang="es">Agregar un caballo</span></h2>
+        <p class="admin-lede">
+          <span lang="en">Fill in the details and choose a photo. The horse appears at the start of the list on the website about a minute after you add it.</span>
+          <span lang="es">Completá los datos y elegí una foto. El caballo aparece al principio de la lista en la página más o menos un minuto después de agregarlo.</span>
+        </p>
+        <form class="admin-form add-form" id="add-form" autocomplete="off" novalidate>
+          <label for="h-name"><span lang="en">Name (Cibao is added in front)</span><span lang="es">Nombre (se agrega Cibao adelante)</span></label>
+          <input id="h-name" type="text" maxlength="40" required placeholder="Drogba">
+          <div class="form-row">
+            <div>
+              <label for="h-sex"><span lang="en">Sex</span><span lang="es">Sexo</span></label>
+              <select id="h-sex">
+                <option value="f">Mare / Hembra</option>
+                <option value="m">Gelding / Macho</option>
+              </select>
+            </div>
+            <div>
+              <label for="h-age"><span lang="en">Age (years)</span><span lang="es">Edad (años)</span></label>
+              <input id="h-age" type="number" inputmode="numeric" min="1" max="30" required>
+            </div>
+            <div>
+              <label for="h-mallet"><span lang="en">Mallet size</span><span lang="es">Taco</span></label>
+              <input id="h-mallet" type="number" inputmode="numeric" min="40" max="60" required>
+            </div>
+          </div>
+          <label for="h-month"><span lang="en">Purchased</span><span lang="es">Fecha de compra</span></label>
+          <div class="form-row form-row-2">
+            <select id="h-month" aria-label="Month / Mes"></select>
+            <select id="h-year" aria-label="Year / Año"></select>
+          </div>
+          <label for="h-photo"><span lang="en">Photo (a horizontal photo works best)</span><span lang="es">Foto (mejor una foto horizontal)</span></label>
+          <input id="h-photo" type="file" accept="image/*">
+          <figure class="photo-preview" id="h-preview" hidden>
+            <img alt="">
+            <figcaption><span lang="en">How the card will look</span><span lang="es">Así se va a ver la ficha</span></figcaption>
+          </figure>
+          <p class="admin-msg" id="add-msg" role="status"></p>
+          <button class="btn btn-primary" type="submit" id="h-add"><span lang="en">Add horse to the website</span><span lang="es">Agregar caballo a la página</span></button>
+        </form>
+
+        <div class="added" id="added-wrap" hidden>
+          <h3><span lang="en">Horses you added</span><span lang="es">Caballos que agregaste</span></h3>
+          <ul class="added-list" id="added-list"></ul>
+        </div>
       </div>
 
       <div class="admin-card" id="stats">
@@ -301,6 +243,24 @@
         </div>
       </div>
 
+      <div class="admin-card" id="ranking" hidden>
+        <p class="eyebrow"><span lang="en">Horses</span><span lang="es">Caballos</span></p>
+        <h2><span lang="en">Most viewed and enquiries</span><span lang="es">Más vistos y consultas</span></h2>
+        <p class="admin-lede">
+          <span lang="en">All time. A view counts each time someone opens a horse's card; an enquiry counts each click on "Enquire by email".</span>
+          <span lang="es">Desde el inicio. Una vista cuenta cada vez que alguien abre la ficha de un caballo; una consulta cuenta cada clic en "Consultar por email".</span>
+        </p>
+        <p class="admin-msg" id="rank-msg" role="status"></p>
+        <div class="rank-head" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span><span lang="en">Views</span><span lang="es">Vistas</span></span>
+          <span><span lang="en">Enquiries</span><span lang="es">Consultas</span></span>
+        </div>
+        <ol class="rank-list" id="rank-list"></ol>
+        <p class="stats-note" id="rank-general"></p>
+      </div>
+
       <p class="admin-foot">
         <a href="../"><span lang="en">View website</span><span lang="es">Ver la página</span></a>
         <button type="button" id="lock"><span lang="en">Lock</span><span lang="es">Cerrar</span></button>
@@ -310,6 +270,7 @@
 
   </main>
 
+  <script type="application/json" id="static-horses">[{"slug": "drogba", "name": "Drogba", "thumb": "assets/img/horses/drogba-640.webp"}, {"slug": "latia-ramona", "name": "Latia Ramona", "thumb": "assets/img/horses/latia-ramona-640.webp"}, {"slug": "big-bay", "name": "Big Bay", "thumb": "assets/img/horses/big-bay-640.webp"}, {"slug": "cuartetera", "name": "Cuartetera", "thumb": "assets/img/horses/cuartetera-640.webp"}, {"slug": "gustava", "name": "Gustava", "thumb": "assets/img/horses/gustava-640.webp"}, {"slug": "nevadito", "name": "Nevadito", "thumb": "assets/img/horses/nevadito-640.webp"}, {"slug": "canita-voladora", "name": "Oro Cañita Voladora", "thumb": "assets/img/horses/canita-voladora-640.webp"}, {"slug": "jazz", "name": "Jazz", "thumb": "assets/img/horses/jazz-640.webp"}, {"slug": "minifalda", "name": "Minifalda", "thumb": "assets/img/horses/minifalda-640.webp"}, {"slug": "callaway", "name": "Callaway", "thumb": "assets/img/horses/callaway-640.webp"}, {"slug": "cuaresma", "name": "Cuaresma", "thumb": "assets/img/horses/cuaresma-640.webp"}]</script>
   <script src="../assets/js/admin.js" defer></script>
 </body>
 </html>

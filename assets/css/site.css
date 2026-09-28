@@ -53,7 +53,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: calc(var(--header-h) + 8px);
+  scroll-padding-top: calc(var(--header-h) + var(--announce-h, 0px) + 8px);
   -webkit-text-size-adjust: 100%;
 }
 
@@ -149,7 +149,6 @@ html[data-lang="es"] [lang="en"]:not(html) { display: none !important; }
   position: fixed;
   inset: 0 0 auto 0;
   z-index: 100;
-  height: var(--header-h);
   color: var(--cream);
   background: rgba(19, 35, 26, 0.94);
   backdrop-filter: saturate(140%) blur(10px);
@@ -160,7 +159,7 @@ html[data-lang="es"] [lang="en"]:not(html) { display: none !important; }
 .site-header.is-scrolled { border-bottom-color: var(--line-dark); }
 
 .header-inner {
-  height: 100%;
+  height: var(--header-h);
   display: flex;
   align-items: center;
   gap: 24px;
@@ -258,7 +257,7 @@ html[data-lang="es"] [lang="en"]:not(html) { display: none !important; }
   .brand-name { font-size: 1.2rem; }
   .site-nav {
     position: fixed;
-    inset: var(--header-h) 0 auto 0;
+    inset: calc(var(--header-h) + var(--announce-h, 0px)) 0 auto 0;
     background: var(--ink);
     border-top: 1px solid var(--line-dark);
     padding: 12px var(--gutter) 28px;
@@ -290,12 +289,25 @@ html[data-lang="es"] [lang="en"]:not(html) { display: none !important; }
   .site-header .brand-mark { display: none; }
 }
 
+/* Announcement bar (admin page); only shown when it has text */
+.announce {
+  background: var(--brass);
+  color: var(--ink);
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.35;
+  padding: 9px var(--gutter);
+}
+.announce[hidden] { display: none; }
+.announce p { max-width: var(--max); margin-inline: auto; overflow-wrap: anywhere; }
+
 /* ---------- Hero ---------- */
 
 .hero {
   background: var(--ink);
   color: var(--cream);
-  padding-top: calc(var(--header-h) + clamp(40px, 7vw, 96px));
+  padding-top: calc(var(--header-h) + var(--announce-h, 0px) + clamp(40px, 7vw, 96px));
   padding-bottom: clamp(56px, 8vw, 112px);
   position: relative;
   overflow: hidden;
@@ -390,7 +402,7 @@ html[data-lang="es"] [lang="en"]:not(html) { display: none !important; }
   gap: clamp(40px, 7vw, 110px);
   align-items: start;
 }
-.about-intro { position: sticky; top: calc(var(--header-h) + 40px); }
+.about-intro { position: sticky; top: calc(var(--header-h) + var(--announce-h, 0px) + 40px); }
 .about-intro .eyebrow { margin-bottom: 20px; }
 .about-intro h2 { font-size: clamp(2rem, 3.4vw, 2.9rem); line-height: 1.1; }
 .signature {

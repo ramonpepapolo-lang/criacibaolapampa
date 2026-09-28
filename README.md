@@ -23,9 +23,17 @@ without touching code:
 
 - the **Last updated** date shown in the footer
 - which horses show the red **SOLD / VENDIDA** band
+- an **announcement bar** at the top of the site (English and Spanish; no bar when both are empty)
+- **new horses**: name, details and one photo. The photo is resized in the browser and uploaded to
+  `assets/img/horses/added/`; the horse is stored in `data/site.json` (`horses`, newest first) and
+  `site.js` renders its card at the start of the list. Added horses can be removed again.
 
-Both live in `data/site.json`, which the site reads on every visit. The admin page saves by
+All of this lives in `data/site.json`, which the site reads on every visit. The admin page saves by
 committing that file through the GitHub API, and GitHub Pages republishes in about a minute.
+
+The site sends GoatCounter events `view-<slug>` when a horse's card is opened and
+`enquiry-<slug>` / `enquiry-general` when an email link is clicked; the admin page ranks horses by
+views and shows enquiry clicks.
 
 It also shows **visitor numbers** (all time, today, last 7 and 30 days, and a daily chart) from
 GoatCounter (`criacibaolapampa.goatcounter.com`, no cookies). The site loads GoatCounter's

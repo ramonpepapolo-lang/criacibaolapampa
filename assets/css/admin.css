@@ -311,3 +311,72 @@
 }
 
 #stats-msg:empty { display: none; }
+
+/* ---------- Add a horse ---------- */
+
+.admin select,
+.admin input[type="text"],
+.admin input[type="number"] {
+  width: 100%;
+  min-height: 50px;
+  padding: 10px 14px;
+  border: 1px solid rgba(19, 35, 26, 0.3);
+  border-radius: 2px;
+  background: var(--paper);
+  font: inherit;
+  color: var(--text);
+}
+.admin input[type="file"] { font: inherit; font-size: 0.9rem; }
+.form-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.form-row > div { display: grid; gap: 10px; align-content: start; }
+.form-row-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.add-form label { margin-top: 6px; }
+.photo-preview { max-width: 320px; }
+.photo-preview img { width: 100%; aspect-ratio: 6 / 5; object-fit: cover; background: var(--paper-2); }
+.photo-preview figcaption { font-size: 0.8rem; color: var(--muted); margin-top: 6px; }
+
+.added { border-top: 1px solid var(--line); padding-top: 18px; margin-top: 6px; }
+.added h3 { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.added-list { list-style: none; margin: 0; padding: 0; }
+.added-list li {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+.added-list img { width: 72px; height: 60px; object-fit: cover; background: var(--paper-2); }
+.added-list .name { font-family: var(--serif); font-size: 1.3rem; line-height: 1.1; }
+.added-list .name small { display: block; font-family: var(--sans); font-size: 0.66rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--brass-dark); }
+.added-list .btn.is-armed { border-color: var(--sold); color: var(--sold); }
+
+/* ---------- Most viewed and enquiries ---------- */
+
+.rank-bar[hidden] { display: none; }
+
+.rank-head,
+.rank-list li {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 64px 72px;
+  gap: 12px;
+  align-items: center;
+}
+.rank-head { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.rank-head > span:nth-child(n+2) { text-align: right; }
+.rank-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.rank-list li { padding: 10px 0; border-bottom: 1px solid var(--line); }
+.rank-list img { width: 44px; height: 37px; object-fit: cover; background: var(--paper-2); }
+.rank-main { display: grid; gap: 6px; min-width: 0; }
+.rank-name { font-family: var(--serif); font-size: 1.15rem; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rank-name small { font-family: var(--sans); font-size: 0.66rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--brass-dark); }
+.rank-track { display: block; height: 8px; }
+.rank-bar { display: block; height: 100%; min-width: 3px; background: #9a6a1c; border-radius: 0 4px 4px 0; }
+.rank-num { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+@media (max-width: 480px) {
+  .form-row { grid-template-columns: 1fr 1fr; }
+  .form-row > div:first-child { grid-column: 1 / -1; }
+  .rank-head, .rank-list li { grid-template-columns: 36px minmax(0, 1fr) 48px 64px; gap: 8px; }
+  .rank-list img { width: 36px; height: 30px; }
+}
