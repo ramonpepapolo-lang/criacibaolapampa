@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin · Cría Cibao La Pampa</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#13231a">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <script>
+    (function () {
+      if (location.protocol === 'http:' && !/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
+        location.replace('https:' + location.href.slice(5));
+      }
+      var l = 'en';
+      try {
+        var s = localStorage.getItem('lang');
+        if (s === 'es' || s === 'en') l = s;
+        else if ((navigator.language || '').toLowerCase().indexOf('es') === 0) l = 'es';
+      } catch (e) {}
+      var d = document.documentElement;
+      d.setAttribute('data-lang', l);
+      d.lang = l;
+      d.className += ' js';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+<body class="admin">
+  <header class="site-header is-scrolled">
+    <div class="container header-inner">
+      <a class="brand" href="../">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-name">Cría Cibao La Pampa</span>
+      </a>
+      <span class="admin-tag">Admin</span>
+      <div class="lang-switch" role="group" aria-label="Language / Idioma">
+        <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-set-lang="es" aria-pressed="false">ES</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-main">
+
+    <!-- 1. Password -->
+    <section class="admin-card" id="view-login">
+      <p class="eyebrow">Admin</p>
+      <h1><span lang="en">Owner access</span><span lang="es">Acceso del dueño</span></h1>
+      <form id="login-form" class="admin-form" autocomplete="off">
+        <label for="password"><span lang="en">Password</span><span lang="es">Contraseña</span></label>
+        <input id="password" type="password" autocomplete="current-password" required>
+        <p class="admin-msg" id="login-msg" role="alert"></p>
+        <button class="btn btn-primary" type="submit"><span lang="en">Enter</span><span lang="es">Entrar</span></button>
+      </form>
+    </section>
+
+    <!-- 2. First time on this device: connect the GitHub key -->
+    <section class="admin-card" id="view-connect" hidden>
+      <p class="eyebrow"><span lang="en">One-time setup</span><span lang="es">Configuración única</span></p>
+      <h1><span lang="en">Connect this device</span><span lang="es">Conectar este dispositivo</span></h1>
+      <p class="admin-lede">
+        <span lang="en">The first time you use admin on a phone or computer, it needs a key from your GitHub account. That key is what lets this page save changes to the website. You only do this once on each device.</span>
+        <span lang="es">La primera vez que usás el admin en un teléfono o computadora, necesita una clave de tu cuenta de GitHub. Esa clave es lo que permite guardar cambios en la página. Se hace una sola vez en cada dispositivo.</span>
+      </p>
+      <ol class="admin-steps">
+        <li>
+          <span lang="en">Open GitHub (you need to be logged in):</span><span lang="es">Abrí GitHub (tenés que estar logueado):</span>
+          <a class="btn btn-ghost btn-sm" href="https://github.com/settings/tokens/new?scopes=public_repo&amp;description=Cria%20Cibao%20admin" target="_blank" rel="noopener"><span lang="en">Create the key on GitHub</span><span lang="es">Crear la clave en GitHub</span></a>
+        </li>
+        <li>
+          <span lang="en">In <b>Expiration</b> choose <b>No expiration</b>. Leave the rest as it is, scroll down and click <b>Generate token</b>.</span>
+          <span lang="es">En <b>Expiration</b> elegí <b>No expiration</b>. Dejá el resto como está, bajá y hacé clic en <b>Generate token</b>.</span>
+        </li>
+        <li>
+          <span lang="en">Copy the key (it starts with <code>ghp_</code>) and paste it here:</span>
+          <span lang="es">Copiá la clave (empieza con <code>ghp_</code>) y pegala acá:</span>
+        </li>
+      </ol>
+      <form id="connect-form" class="admin-form" autocomplete="off">
+        <label for="token"><span lang="en">GitHub key</span><span lang="es">Clave de GitHub</span></label>
+        <input id="token" type="password" spellcheck="false" autocapitalize="off" required>
+        <p class="admin-msg" id="connect-msg" role="alert"></p>
+        <button class="btn btn-primary" type="submit"><span lang="en">Connect</span><span lang="es">Conectar</span></button>
+      </form>
+    </section>
+
+    <!-- 3. Editor -->
+    <section id="view-edit" hidden>
+      <div class="admin-card">
+        <p class="eyebrow"><span lang="en">Bottom of the website</span><span lang="es">Al pie de la página</span></p>
+        <h2><span lang="en">Last updated</span><span lang="es">Última actualización</span></h2>
+        <div class="date-row">
+          <input id="updated" type="date" aria-label="Last updated">
+          <button class="btn btn-ghost btn-sm" type="button" id="today"><span lang="en">Today</span><span lang="es">Hoy</span></button>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <p class="eyebrow"><span lang="en">Horses</span><span lang="es">Caballos</span></p>
+        <h2><span lang="en">Sold</span><span lang="es">Vendidos</span></h2>
+        <p class="admin-lede">
+          <span lang="en">Switch a horse on to show the red SOLD / VENDIDA band on its photo. The card stays on the website.</span>
+          <span lang="es">Activá un caballo para que su foto muestre la banda roja VENDIDA / SOLD. La ficha sigue en la página.</span>
+        </p>
+        <ul class="sold-list">
+          <li>
+            <label>
+              <img src="../assets/img/horses/drogba-640.webp" alt="" width="72" height="60" loading="lazy">
+              <span class="name"><small>Cibao</small>Drogba</span>
+              <span class="switch">
+                <input type="checkbox" value="drogba">
+                <span class="track" aria-hidden="true"></span>
+                <span class="state" aria-hidden="true"><span class="off"><span lang="en">For sale</span><span lang="es">En venta</span></span><span class="on"><span lang="en">Sold</span><span lang="es">Vendida</span></span></span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <img src="../assets/img/horses/latia-ramona-640.webp" alt="" width="72" height="60" loading="lazy">
+              <span class="name"><small>Cibao</small>Latia Ramona</span>
+              <span class="switch">
+                <input type="checkbox" value="latia-ramona">
+                <span class="track" aria-hidden="true"></span>
+                <span class="state" aria-hidden="true"><span class="off"><span lang="en">For sale</span><span lang="es">En venta</span></span><span class="on"><span lang="en">Sold</span><span lang="es">Vendida</span></span></span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <img src="../assets/img/horses/big-bay-640.webp" alt="" width="72" height="60" loading="lazy">
+              <span class="name"><small>Cibao</small>Big Bay</span>
+              <span class="switch">
+                <input type="checkbox" value="big-bay">
+                <span class="track" aria-hidden="true"></span>
+                <span class="state" aria-hidden="true"><span class="off"><span lang="en">For sale</span><span lang="es">En venta</span></span><span class="on"><span lang="en">Sold</span><span lang="es">Vendida</span></span></span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <img src="../assets/img/horses/cuartetera-640.webp" alt="" width="72" height="60" loading="lazy">
+              <span class="name"><small>Cibao</small>Cuartetera</span>
+              <span class="switch">
+                <input type="checkbox" value="cuartetera">
+                <span class="track" aria-hidden="true"></span>
+                <span class="state" aria-hidden="true"><span class="off"><span lang="en">For sale</span><span lang="es">En venta</span></span><span class="on"><span lang="en">Sold</span><span lang="es">Vendida</span></span></span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <img src="../assets/img/horses/gustava-640.webp" alt="" width="72" height="60" loading="lazy">
+              <span class="name"><small>Cibao</small>Gustava</span>
+              <span class="switch">
+                <input type="checkbox" value="gustava">
+                <span class="track" aria-hidden="true"></span>
+                <span class="state" aria-hidden="true"><span class="off"><span lang="en">For sale</span><span lang="es">En venta</span></span><span class="on"><span lang="en">Sold</span><span lang="es">Vendida</span></span></span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <img src="../assets/img/horses/nevadito-640.webp" alt="" width="72" height="60" loading="lazy">
+              <span class="name"><small>Cibao</small>Nevadito</span>
+              <span class="switch">
+                <input type="checkbox" value="nevadito">
+                <span class="track" aria-hidden="true"></span>
+                <span class="state" aria-hidden="true"><span class="off"><span lang="en">For sale</span><span lang="es">En venta</span></span><span class="on"><span lang="en">Sold</span><span lang="es">Vendida</span></span></span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <img src="../assets/img/horses/canita-voladora-640.webp" alt="" width="72" height="60" loading="lazy">
+              <span class="name"><small>Cibao</small>Oro Cañita Voladora</span>
+              <span class="switch">
+                <input type="checkbox" value="canita-voladora">
+                <span class="track" aria-hidden="true"></span>
+                <span class="state" aria-hidden="true"><span class="off"><span lang="en">For sale</span><span lang="es">En venta</span></span><span class="on"><span lang="en">Sold</span><span lang="es">Vendida</span></span></span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <img src="../assets/img/horses/jazz-640.webp" alt="" width="72" height="60" loading="lazy">
+              <span class="name"><small>Cibao</small>Jazz</span>
+              <span class="switch">
+                <input type="checkbox" value="jazz">
+                <span class="track" aria-hidden="true"></span>
+                <span class="state" aria-hidden="true"><span class="off"><span lang="en">For sale</span><span lang="es">En venta</span></span><span class="on"><span lang="en">Sold</span><span lang="es">Vendida</span></span></span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <img src="../assets/img/horses/minifalda-640.webp" alt="" width="72" height="60" loading="lazy">
+              <span class="name"><small>Cibao</small>Minifalda</span>
+              <span class="switch">
+                <input type="checkbox" value="minifalda">
+                <span class="track" aria-hidden="true"></span>
+                <span class="state" aria-hidden="true"><span class="off"><span lang="en">For sale</span><span lang="es">En venta</span></span><span class="on"><span lang="en">Sold</span><span lang="es">Vendida</span></span></span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <img src="../assets/img/horses/callaway-640.webp" alt="" width="72" height="60" loading="lazy">
+              <span class="name"><small>Cibao</small>Callaway</span>
+              <span class="switch">
+                <input type="checkbox" value="callaway">
+                <span class="track" aria-hidden="true"></span>
+                <span class="state" aria-hidden="true"><span class="off"><span lang="en">For sale</span><span lang="es">En venta</span></span><span class="on"><span lang="en">Sold</span><span lang="es">Vendida</span></span></span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <img src="../assets/img/horses/cuaresma-640.webp" alt="" width="72" height="60" loading="lazy">
+              <span class="name"><small>Cibao</small>Cuaresma</span>
+              <span class="switch">
+                <input type="checkbox" value="cuaresma">
+                <span class="track" aria-hidden="true"></span>
+                <span class="state" aria-hidden="true"><span class="off"><span lang="en">For sale</span><span lang="es">En venta</span></span><span class="on"><span lang="en">Sold</span><span lang="es">Vendida</span></span></span>
+              </span>
+            </label>
+          </li>
+        </ul>
+      </div>
+
+      <div class="admin-bar">
+        <p class="admin-msg" id="save-msg" role="status"></p>
+        <button class="btn btn-primary" type="button" id="save"><span lang="en">Save changes</span><span lang="es">Guardar cambios</span></button>
+      </div>
+
+      <p class="admin-foot">
+        <a href="../"><span lang="en">View website</span><span lang="es">Ver la página</span></a>
+        <button type="button" id="lock"><span lang="en">Lock</span><span lang="es">Cerrar</span></button>
+        <button type="button" id="forget"><span lang="en">Disconnect this device</span><span lang="es">Desconectar este dispositivo</span></button>
+      </p>
+    </section>
+
+  </main>
+
+  <script src="../assets/js/admin.js" defer></script>
+</body>
+</html>

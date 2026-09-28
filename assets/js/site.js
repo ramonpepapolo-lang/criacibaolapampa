@@ -4,6 +4,7 @@
   var root = document.documentElement;
   var current = null; // index of the horse open in the dialog
   var opener = null;
+  var siteStatus = null; // { updated: 'YYYY-MM-DD', sold: [slug, ...] } from data/site.json
   var EMAIL = 'info@criacibaolapampa.com';
   var TITLES = {
     en: 'Cría Cibao La Pampa · Polo Horses, La Pampa, Argentina',
@@ -30,6 +31,7 @@
       el.setAttribute('aria-label', el.getAttribute('data-label-' + l));
     });
     if (current !== null) fillDialog(current);
+    renderUpdated();
   }
 
   document.querySelectorAll('[data-set-lang]').forEach(function (b) {
@@ -169,6 +171,47 @@
       if (horses[i].slug === m[1]) { openHorse(i); return; }
     }
   }
+
+  /* ---------- Sold horses and "last updated" (set on the admin page) ---------- */
+
+  function applyStatus(s) {
+    siteStatus = s || { sold: [] };
+    var sold = siteStatus.sold || [];
+    horses.forEach(function (h) {
+      h.sold = sold.indexOf(h.slug) !== -1;
+      var card = document.getElementById('horse-' + h.slug);
+      if (!card) return;
+      card.classList.toggle('is-sold', h.sold);
+      var band = card.querySelector('.sold-band');
+      if (h.sold && !band) {
+        band = document.createElement('span');
+        band.className = 'sold-band';
+        band.innerHTML = bi(['Sold', 'Vendida']);
+        card.querySelector('.horse-photo').prepend(band);
+      } else if (!h.sold && band) {
+        band.remove();
+      }
+    });
+    if (current !== null) fillDialog(current);
+    renderUpdated();
+  }
+
+  function renderUpdated() {
+    var el = document.getElementById('last-updated');
+    var m = siteStatus && /^(\d{4})-(\d{2})-(\d{2})$/.exec(siteStatus.updated || '');
+    if (!el || !m) return;
+    var date = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+    var t = el.querySelector('time');
+    t.setAttribute('datetime', siteStatus.updated);
+    t.textContent = new Intl.DateTimeFormat(lang() === 'es' ? 'es-AR' : 'en-GB',
+      { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
+    el.hidden = false;
+  }
+
+  fetch('data/site.json?v=' + Date.now(), { cache: 'no-store' })
+    .then(function (r) { if (!r.ok) throw r.status; return r.json(); })
+    .catch(function () { return JSON.parse(document.getElementById('site-status').textContent); })
+    .then(applyStatus);
 
   /* ---------- Video ---------- */
 

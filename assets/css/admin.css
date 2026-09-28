@@ -1,0 +1,187 @@
+/* Admin page (admin/index.html). Builds on site.css. */
+
+[hidden] { display: none !important; }
+
+.admin { background: var(--paper); min-height: 100vh; }
+
+.admin-tag {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brass);
+  border: 1px solid rgba(193, 154, 85, 0.45);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.admin-main {
+  width: 100%;
+  max-width: 720px;
+  margin-inline: auto;
+  padding: calc(var(--header-h) + 40px) var(--gutter) 64px;
+  display: grid;
+  gap: 20px;
+}
+#view-edit { display: grid; gap: 20px; }
+#view-edit[hidden] { display: none; }
+
+.admin-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  padding: clamp(22px, 4vw, 36px);
+  display: grid;
+  gap: 16px;
+}
+.admin-card h1,
+.admin-card h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  line-height: 1.05;
+}
+.admin-card h1 { font-size: clamp(2.2rem, 6vw, 3rem); }
+.admin-card h2 { font-size: clamp(1.8rem, 4.5vw, 2.3rem); }
+.admin-lede { color: var(--muted); }
+
+.admin-form { display: grid; gap: 10px; margin-top: 8px; }
+.admin-form label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.admin input[type="password"],
+.admin input[type="date"] {
+  width: 100%;
+  min-height: 50px;
+  padding: 10px 14px;
+  border: 1px solid rgba(19, 35, 26, 0.3);
+  border-radius: 2px;
+  background: var(--paper);
+  font: inherit;
+  color: var(--text);
+}
+.admin input:focus-visible { outline: 2px solid var(--brass-dark); outline-offset: 1px; }
+.admin-form .btn { justify-self: start; }
+
+.admin-msg { min-height: 1.4em; font-size: 0.92rem; color: var(--muted); }
+.admin-msg.is-error { color: var(--sold); }
+.admin-msg.is-ok { color: #2f6b3a; }
+
+.btn-sm { min-height: 42px; padding: 8px 16px; font-size: 0.72rem; }
+
+.admin-steps {
+  margin: 0;
+  padding-left: 1.3em;
+  display: grid;
+  gap: 12px;
+}
+.admin-steps li > .btn { display: flex; width: max-content; margin-top: 10px; }
+.admin-steps code { font-size: 0.9em; background: var(--paper-2); padding: 1px 5px; }
+
+.date-row { display: flex; gap: 10px; align-items: center; }
+.date-row input { max-width: 240px; }
+
+.sold-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.sold-list li { border-bottom: 1px solid var(--line); }
+.sold-list label {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  padding: 12px 0;
+  cursor: pointer;
+}
+.sold-list img { width: 72px; height: 60px; object-fit: cover; background: var(--paper-2); }
+.sold-list .name { font-family: var(--serif); font-size: 1.4rem; line-height: 1.1; }
+.sold-list .name small {
+  display: block;
+  font-family: var(--sans);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brass-dark);
+}
+
+/* switch */
+.switch { position: relative; display: inline-flex; align-items: center; gap: 10px; }
+.switch input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.switch .track {
+  width: 48px;
+  height: 28px;
+  border-radius: 999px;
+  background: rgba(19, 35, 26, 0.18);
+  position: relative;
+  transition: background-color 0.2s;
+}
+.switch .track::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s var(--ease);
+}
+.switch input:checked + .track { background: var(--sold); }
+.switch input:checked + .track::after { transform: translateX(20px); }
+.switch input:focus-visible + .track { outline: 2px solid var(--brass-dark); outline-offset: 2px; }
+.switch .state { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); min-width: 4.8em; }
+.switch input:checked ~ .state { color: var(--sold); }
+.switch .state .on { display: none; }
+.switch input:checked ~ .state .on { display: inline; }
+.switch input:checked ~ .state .off { display: none; }
+
+.admin-bar {
+  position: sticky;
+  bottom: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--ink);
+  color: var(--cream);
+  box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.5);
+}
+.admin-bar .admin-msg { color: var(--cream-muted); flex: 1 1 200px; }
+.admin-bar .admin-msg.is-ok { color: #9fd3a9; }
+.admin-bar .admin-msg.is-error { color: #ffb4a8; }
+.admin-bar .btn-primary { background: var(--brass); color: var(--ink); }
+.admin-bar .btn-primary:hover { background: var(--cream); }
+.admin-bar .btn[disabled] { opacity: 0.6; cursor: progress; }
+
+.admin-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.admin-foot a,
+.admin-foot button {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  font-size: inherit;
+}
+.admin-foot a:hover,
+.admin-foot button:hover { color: var(--text); }
+
+@media (max-width: 480px) {
+  .admin-tag { display: none; }
+  .sold-list label { grid-template-columns: 56px minmax(0, 1fr) auto; gap: 12px; }
+  .sold-list img { width: 56px; height: 47px; }
+  .sold-list .name { font-size: 1.2rem; }
+  .switch .state { display: none; }
+}

@@ -820,6 +820,12 @@ html[data-lang="es"] [lang="en"]:not(html) { display: none !important; }
   padding-top: 24px;
   font-size: 0.8rem;
 }
+.admin-link {
+  color: rgba(245, 241, 232, 0.45);
+  text-decoration: none;
+  font-size: 0.72rem;
+}
+.admin-link:hover { color: var(--cream); text-decoration: underline; }
 
 /* ---------- Reveal on scroll ---------- */
 
