@@ -4,14 +4,14 @@
   var root = document.documentElement;
   var current = null; // index of the horse open in the dialog
   var opener = null;
-  var WA_NUMBER = '34682327444';
+  var EMAIL = 'info@criacibaolapampa.com';
   var TITLES = {
     en: 'Cría Cibao La Pampa · Polo Horses, La Pampa, Argentina',
     es: 'Cría Cibao La Pampa · Caballos de Polo, La Pampa, Argentina'
   };
-  var WA_TEXT = {
-    en: function (name) { return 'Hi, I am interested in ' + name + '.'; },
-    es: function (name) { return 'Hola, me interesa ' + name + '.'; }
+  var MAIL = {
+    en: function (name) { return { subject: 'Enquiry: ' + name, body: 'Hi, I am interested in ' + name + '.\n\n' }; },
+    es: function (name) { return { subject: 'Consulta: ' + name, body: 'Hola, me interesa ' + name + '.\n\n' }; }
   };
 
   function lang() { return root.getAttribute('data-lang') === 'es' ? 'es' : 'en'; }
@@ -87,8 +87,9 @@
     document.getElementById('dlg-purchased').innerHTML = bi(h.purchased);
     document.getElementById('dlg-mallet').textContent = h.mallet;
     document.getElementById('dlg-count').textContent = (i + 1) + ' / ' + horses.length;
-    document.getElementById('dlg-wa').href =
-      'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(WA_TEXT[lang()](full));
+    var mail = MAIL[lang()](full);
+    document.getElementById('dlg-mail').href = 'mailto:' + EMAIL +
+      '?subject=' + encodeURIComponent(mail.subject) + '&body=' + encodeURIComponent(mail.body);
     // warm the neighbours so next/previous feels instant
     [i - 1, i + 1].forEach(function (n) {
       var k = (n + horses.length) % horses.length;
