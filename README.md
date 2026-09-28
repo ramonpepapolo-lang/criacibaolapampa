@@ -39,8 +39,9 @@ protects the site. To change the password, update `PASS_HASH` in `assets/js/admi
 (sha256 of `cria-cibao-admin:` + the new password); each device then connects again once.
 
 
-**Feature a YouTube video.** In `index.html`, find `data-youtube-id=""` and paste the video ID
-(the part after `v=` in the link, or after `youtu.be/`). Leave it empty to link to the channel instead.
+**Change the featured video.** In `index.html`, find `youtube-nocookie.com/embed/` and replace the ID
+after it with the new one (the part after `shorts/`, `v=` or `youtu.be/` in the YouTube link). The
+player is vertical, sized for YouTube Shorts.
 
 **Change the contact email.** Search `index.html` for `info@criacibaolapampa.com` and update
 `EMAIL` in `assets/js/site.js`. The address is a forwarder set up in Namecheap

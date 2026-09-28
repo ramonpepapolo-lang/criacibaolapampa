@@ -213,29 +213,6 @@
     .catch(function () { return JSON.parse(document.getElementById('site-status').textContent); })
     .then(applyStatus);
 
-  /* ---------- Video ---------- */
-
-  var frame = document.getElementById('video-frame');
-  var videoId = (frame.getAttribute('data-youtube-id') || '').trim();
-  if (videoId) {
-    var poster = frame.querySelector('.video-poster');
-    frame.querySelector('[data-when="channel"]').hidden = true;
-    frame.querySelector('[data-when="video"]').hidden = false;
-    poster.setAttribute('href', 'https://www.youtube.com/watch?v=' + encodeURIComponent(videoId));
-    poster.addEventListener('click', function (e) {
-      if (e.metaKey || e.ctrlKey || e.shiftKey) return;
-      e.preventDefault();
-      var iframe = document.createElement('iframe');
-      iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(videoId) +
-        '?autoplay=1&rel=0&playsinline=1&hl=' + lang();
-      iframe.title = 'Cibao La Pampa · YouTube';
-      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-      iframe.allowFullscreen = true;
-      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-      frame.replaceChild(iframe, poster);
-    });
-  }
-
   /* ---------- Reveal on scroll ---------- */
 
   var reveals = document.querySelectorAll('.reveal');

@@ -345,34 +345,29 @@
 
     <!-- VIDEO -->
     <section class="section section-dark on-dark" id="video">
-      <div class="container">
-        <div class="section-head video-head reveal">
+      <div class="container video-grid">
+        <div class="section-head video-copy reveal">
           <p class="eyebrow">YouTube</p>
           <h2><span lang="en">The entire journey was documented.</span><span lang="es">Todo el proceso quedó registrado.</span></h2>
           <p>
             <span lang="en">Watch the horses in action and follow their progress from day one on our YouTube channel.</span>
             <span lang="es">Podés ver a los caballos en acción y su evolución desde el primer día en nuestro canal de YouTube.</span>
           </p>
+          <div>
+            <a class="btn btn-ghost" href="https://www.youtube.com/@cibao_la_pampa" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="3.5"/><path d="M10 9.2v5.6l4.8-2.8z" fill="currentColor" stroke="none"/></svg>
+              YouTube: Cibao La Pampa
+            </a>
+          </div>
         </div>
 
-        <!-- To feature a video, paste its YouTube ID into data-youtube-id (the part after v= in the link). -->
-        <div class="video-frame reveal" id="video-frame" data-youtube-id="">
-          <a class="video-poster" href="https://www.youtube.com/@cibao_la_pampa" target="_blank" rel="noopener">
-            <img src="assets/img/video-poster-960.webp" srcset="assets/img/video-poster-960.webp 960w, assets/img/video-poster-1600.webp 1600w" sizes="(max-width: 1140px) 100vw, 1100px" width="1600" height="900" loading="lazy" decoding="async" alt="">
-            <span class="video-play">
-              <span class="video-play-icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4.5v15l13-7.5z"/></svg></span>
-              <span class="video-play-label" data-when="channel"><span lang="en">Watch on YouTube</span><span lang="es">Ver en YouTube</span></span>
-              <span class="video-play-label" data-when="video" hidden><span lang="en">Play video</span><span lang="es">Ver video</span></span>
-            </span>
-          </a>
-        </div>
-
-        <div class="video-foot reveal">
-          <a class="btn btn-ghost" href="https://www.youtube.com/@cibao_la_pampa" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="3.5"/><path d="M10 9.2v5.6l4.8-2.8z" fill="currentColor" stroke="none"/></svg>
-            YouTube: Cibao La Pampa
-          </a>
-        </div>
+        <!-- Featured video: to change it, replace the ID after /embed/ (from the YouTube or Shorts link). -->
+        <figure class="video-short reveal">
+          <div class="video-frame">
+            <iframe src="https://www.youtube-nocookie.com/embed/ZL59g77Z4ig?rel=0&amp;playsinline=1" title="Cibao Latia Ramona · YouTube" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+          <figcaption>Cibao Latia Ramona <span lang="en">in action</span><span lang="es">en acción</span></figcaption>
+        </figure>
       </div>
     </section>
 
