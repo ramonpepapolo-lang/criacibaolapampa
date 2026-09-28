@@ -1,573 +1,465 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en" data-lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cría Cibao La Pampa — Caballos de Polo</title>
-    <meta name="description" content="Cría Cibao La Pampa — Criadero de caballos de polo en La Pampa, Argentina. Polo horse breeding in La Pampa, Argentina.">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cría Cibao La Pampa · Polo Horses, La Pampa, Argentina</title>
+  <meta name="description" content="Cría Cibao La Pampa: polo horse breeding in La Pampa, Argentina. A project by Ramón Pepa.">
+  <link rel="canonical" href="https://criacibaolapampa.com/">
+  <meta name="theme-color" content="#13231a">
+  <meta name="author" content="Ramón Pepa">
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Cría Cibao La Pampa">
+  <meta property="og:title" content="Cría Cibao La Pampa · Polo Horses">
+  <meta property="og:description" content="Polo horse breeding in La Pampa, Argentina. A project by Ramón Pepa.">
+  <meta property="og:url" content="https://criacibaolapampa.com/">
+  <meta property="og:image" content="https://criacibaolapampa.com/assets/img/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_GB">
+  <meta property="og:locale:alternate" content="es_AR">
+  <meta name="twitter:card" content="summary_large_image">
 
-        :root {
-            --verde-oscuro: #1a2e1a;
-            --verde-campo: #2d4a2d;
-            --crema: #f5f0e8;
-            --crema-claro: #faf8f4;
-            --dorado: #b8960c;
-            --dorado-claro: #d4b44a;
-            --texto: #2c2c2c;
-            --texto-claro: #5a5a5a;
-        }
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--crema-claro);
-            color: var(--texto);
-            line-height: 1.7;
-        }
+  <script>
+    (function () {
+      var l = 'en';
+      try {
+        var q = new URLSearchParams(location.search).get('lang');
+        var s = localStorage.getItem('lang');
+        if (q === 'es' || q === 'en') l = q;
+        else if (s === 'es' || s === 'en') l = s;
+        else if ((navigator.language || '').toLowerCase().indexOf('es') === 0) l = 'es';
+      } catch (e) {}
+      var d = document.documentElement;
+      d.setAttribute('data-lang', l);
+      d.lang = l;
+      d.className += ' js';
+    })();
+  </script>
 
-        /* ===== HEADER ===== */
-        header {
-            background: var(--verde-oscuro);
-            color: var(--crema);
-            text-align: center;
-            padding: 60px 20px 50px;
-            position: relative;
-        }
+  <link rel="preload" href="assets/fonts/instrument-serif-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" as="image" href="assets/img/hero-900.webp" imagesrcset="assets/img/hero-900.webp 900w, assets/img/hero-1600.webp 1600w" imagesizes="(max-width: 860px) 100vw, 58vw">
+  <link rel="stylesheet" href="assets/css/site.css">
 
-        header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--verde-oscuro), var(--dorado), var(--verde-oscuro));
-        }
-
-        .site-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(2.2rem, 5vw, 3.8rem);
-            font-weight: 700;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-        }
-
-        .site-subtitle {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1rem, 2.5vw, 1.4rem);
-            font-weight: 400;
-            font-style: italic;
-            color: var(--dorado-claro);
-            letter-spacing: 2px;
-        }
-
-        /* ===== NAV ===== */
-        nav {
-            background: var(--verde-campo);
-            padding: 14px 20px;
-            text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-        }
-
-        nav a {
-            color: var(--crema);
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 500;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            margin: 0 15px;
-            transition: color 0.3s;
-        }
-
-        nav a:hover { color: var(--dorado-claro); }
-
-        /* ===== INTRO ===== */
-        .intro-section {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 60px 30px;
-        }
-
-        .intro-section h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: var(--verde-oscuro);
-            margin-bottom: 25px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--dorado);
-            display: inline-block;
-        }
-
-        .intro-section p {
-            font-size: 1.05rem;
-            color: var(--texto);
-            margin-bottom: 18px;
-            font-weight: 300;
-        }
-
-        .intro-section a {
-            color: var(--dorado);
-            font-weight: 500;
-            text-decoration: none;
-            border-bottom: 1px solid var(--dorado);
-            transition: color 0.3s;
-        }
-
-        .intro-section a:hover { color: var(--verde-campo); border-color: var(--verde-campo); }
-
-        .lang-divider {
-            width: 60px;
-            height: 1px;
-            background: var(--dorado);
-            margin: 40px auto;
-        }
-
-        /* ===== HORSES GRID ===== */
-        .horses-section {
-            background: var(--crema);
-            padding: 60px 20px;
-        }
-
-        .horses-section > h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: var(--verde-oscuro);
-            text-align: center;
-            margin-bottom: 50px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .horses-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 35px;
-        }
-
-        .horse-card {
-            background: var(--crema-claro);
-            border-radius: 6px;
-            overflow: hidden;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .horse-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-        }
-
-        .horse-card img {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .horse-info {
-            padding: 25px;
-        }
-
-        .horse-info h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--verde-oscuro);
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-        }
-
-        .horse-details {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .horse-details .detail-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9rem;
-            padding: 4px 0;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-
-        .detail-row .label {
-            font-weight: 500;
-            color: var(--texto-claro);
-        }
-
-        .detail-row .value {
-            font-weight: 400;
-            color: var(--texto);
-        }
-
-        .horse-details-en {
-            margin-top: 14px;
-            padding-top: 14px;
-            border-top: 1px solid var(--dorado);
-            opacity: 0.7;
-            font-size: 0.85rem;
-        }
-
-        .horse-details-en .detail-row {
-            font-size: 0.85rem;
-        }
-
-        /* ===== CONTACT ===== */
-        .contact-section {
-            background: var(--verde-oscuro);
-            color: var(--crema);
-            text-align: center;
-            padding: 50px 20px;
-        }
-
-        .contact-section h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            letter-spacing: 2px;
-        }
-
-        .contact-section p {
-            font-size: 1.05rem;
-            font-weight: 300;
-            margin-bottom: 10px;
-        }
-
-        .contact-section a {
-            color: var(--dorado-claro);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .contact-section a:hover { text-decoration: underline; }
-
-        .phone-link {
-            font-size: 1.3rem;
-            font-weight: 500;
-            letter-spacing: 1px;
-        }
-
-        /* ===== FOOTER ===== */
-        footer {
-            background: #111;
-            color: #777;
-            text-align: center;
-            padding: 25px 20px;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 768px) {
-            header { padding: 40px 15px 35px; }
-            nav a { margin: 0 8px; font-size: 0.75rem; }
-            .intro-section { padding: 40px 20px; }
-            .horses-grid { grid-template-columns: 1fr; gap: 25px; }
-            .horse-card img { height: 250px; }
-        }
-
-        @media (max-width: 480px) {
-            nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
-            nav a { margin: 0 5px; font-size: 0.7rem; }
-        }
-    </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Cría Cibao La Pampa",
+    "url": "https://criacibaolapampa.com/",
+    "logo": "https://criacibaolapampa.com/assets/img/logo-512.png",
+    "description": "Polo horse breeding in La Pampa, Argentina.",
+    "founder": { "@type": "Person", "name": "Ramón Pepa" },
+    "address": { "@type": "PostalAddress", "addressRegion": "La Pampa", "addressCountry": "AR" },
+    "telephone": "+34682327444",
+    "sameAs": ["https://www.youtube.com/@cibao_la_pampa"]
+  }
+  </script>
 </head>
 <body>
+  <a class="skip-link" href="#main"><span lang="en">Skip to content</span><span lang="es">Ir al contenido</span></a>
 
-    <!-- HEADER -->
-    <header>
-        <h1 class="site-title">Cría Cibao La Pampa</h1>
-        <p class="site-subtitle">Caballos de Polo &mdash; La Pampa, Argentina</p>
-    </header>
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#top" aria-label="Cría Cibao La Pampa">
+        <span class="brand-mark" aria-hidden="true">C</span>
+        <span class="brand-name">Cría Cibao La Pampa</span>
+      </a>
 
-    <!-- NAV -->
-    <nav>
-        <a href="#intro">Inicio</a>
-        <a href="#caballos">Caballos</a>
-        <a href="#contacto">Contacto</a>
-        <a href="https://www.youtube.com/@cibao_la_pampa" target="_blank">YouTube</a>
-    </nav>
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="#about"><span lang="en">About</span><span lang="es">Quiénes somos</span></a></li>
+          <li><a href="#horses"><span lang="en">Horses</span><span lang="es">Caballos</span></a></li>
+          <li><a href="#video"><span lang="en">Video</span><span lang="es">Video</span></a></li>
+          <li><a href="#contact"><span lang="en">Contact</span><span lang="es">Contacto</span></a></li>
+        </ul>
+      </nav>
 
-    <!-- INTRO -->
-    <section id="intro" class="intro-section">
-        <h2>Quiénes somos</h2>
-        <p>
-            Somos un criadero de caballos de polo con base en La Pampa, Argentina. En diciembre de 2023, compramos 11 potrillos recién entregados de doma — sin experiencia alguna en polo. A partir de ahí, los fuimos formando paso a paso, con paciencia y trabajo diario, durante más de dos años. Hoy, en abril de 2026, son caballos hechos: preparados para torneos de alta velocidad y listos para la venta.
-        </p>
-        <p>
-            Todo el proceso quedó registrado. Podés ver a los caballos en acción y su evolución desde el primer día en nuestro canal de YouTube: <a href="https://www.youtube.com/@cibao_la_pampa" target="_blank">Cibao La Pampa</a>
-        </p>
-        <p style="font-style: italic; color: var(--texto-claro);">Un proyecto de Ramón Pepa.</p>
+      <div class="lang-switch" role="group" aria-label="Language / Idioma">
+        <button type="button" data-set-lang="en" aria-pressed="true" title="English">EN</button>
+        <button type="button" data-set-lang="es" aria-pressed="false" title="Español">ES</button>
+      </div>
 
-        <div class="lang-divider"></div>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-label-en="Menu" data-label-es="Menú" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
 
-        <h2>About us</h2>
-        <p>
-            We are a polo horse breeding operation based in La Pampa, Argentina. In December 2023, we purchased 11 young horses fresh off their initial breaking — with zero polo experience. From there, we trained them patiently and gradually over more than two years. Today, in April 2026, they are fully made horses: ready for high-speed tournaments and available for sale.
-        </p>
-        <p>
-            The entire journey was documented. You can watch the horses in action and follow their progress from day one on our YouTube channel: <a href="https://www.youtube.com/@cibao_la_pampa" target="_blank">Cibao La Pampa</a>
-        </p>
-        <p style="font-style: italic; color: var(--texto-claro);">A project by Ramón Pepa.</p>
+  <main id="main">
+
+    <!-- HERO -->
+    <section class="hero on-dark" id="top">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow"><span lang="en">Polo horses · La Pampa, Argentina</span><span lang="es">Caballos de polo · La Pampa, Argentina</span></p>
+          <h1>Cría Cibao <em>La Pampa</em></h1>
+          <p class="hero-lede"><span lang="en">A project by Ramón Pepa.</span><span lang="es">Un proyecto de Ramón Pepa.</span></p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#horses"><span lang="en">See the horses</span><span lang="es">Ver los caballos</span></a>
+            <a class="btn btn-ghost" href="#video"><span lang="en">Watch the video</span><span lang="es">Ver el video</span></a>
+          </div>
+        </div>
+        <figure class="hero-media">
+          <img src="assets/img/hero-900.webp" srcset="assets/img/hero-900.webp 900w, assets/img/hero-1600.webp 1600w" sizes="(max-width: 860px) 100vw, 58vw" width="1600" height="1201" fetchpriority="high" alt="Cibao Latia Ramona">
+          <figcaption>Cibao Latia Ramona</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+      <div class="container about-grid">
+        <div class="about-intro reveal">
+          <p class="eyebrow"><span lang="en">About us</span><span lang="es">Quiénes somos</span></p>
+          <h2>
+            <span lang="en">We are a polo horse breeding operation based in La Pampa, Argentina.</span>
+            <span lang="es">Somos un criadero de caballos de polo con base en La Pampa, Argentina.</span>
+          </h2>
+        </div>
+
+        <ol class="timeline">
+          <li class="reveal">
+            <p class="tl-date"><span lang="en">December 2023</span><span lang="es">Diciembre 2023</span></p>
+            <p>
+              <span lang="en">We purchased 11 young horses fresh off their initial breaking, with zero polo experience.</span>
+              <span lang="es">Compramos 11 potrillos recién entregados de doma, sin experiencia alguna en polo.</span>
+            </p>
+          </li>
+          <li class="reveal">
+            <p class="tl-date"><span lang="en">More than two years</span><span lang="es">Más de dos años</span></p>
+            <p>
+              <span lang="en">From there, we trained them patiently and gradually.</span>
+              <span lang="es">A partir de ahí, los fuimos formando paso a paso, con paciencia y trabajo diario.</span>
+            </p>
+          </li>
+          <li class="reveal">
+            <p class="tl-date"><span lang="en">April 2026</span><span lang="es">Abril 2026</span></p>
+            <p>
+              <span lang="en">They are fully made horses: ready for high-speed tournaments and available for sale.</span>
+              <span lang="es">Son caballos hechos: preparados para torneos de alta velocidad y listos para la venta.</span>
+            </p>
+          </li>
+        </ol>
+      </div>
     </section>
 
     <!-- HORSES -->
-    <section id="caballos" class="horses-section">
-        <h2>Nuestros Caballos / Our Horses</h2>
-
-        <div class="horses-grid">
-
-            <!-- 1. DROGBA -->
-            <div class="horse-card">
-                <img src="drogba.jpeg" alt="Cibao Drogba">
-                <div class="horse-info">
-                    <h3>Cibao Drogba</h3>
-                    <div class="horse-details">
-                        <div class="detail-row"><span class="label">Sexo</span><span class="value">Hembra</span></div>
-                        <div class="detail-row"><span class="label">Edad</span><span class="value">6 años</span></div>
-                        <div class="detail-row"><span class="label">Fecha de compra</span><span class="value">Diciembre 2023</span></div>
-                        <div class="detail-row"><span class="label">Taco</span><span class="value">51</span></div>
-                    </div>
-                    <div class="horse-details horse-details-en">
-                        <div class="detail-row"><span class="label">Sex</span><span class="value">Mare</span></div>
-                        <div class="detail-row"><span class="label">Age</span><span class="value">6 years</span></div>
-                        <div class="detail-row"><span class="label">Date purchased</span><span class="value">December 2023</span></div>
-                        <div class="detail-row"><span class="label">Mallet size</span><span class="value">51</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 2. LATIA RAMONA -->
-            <div class="horse-card">
-                <img src="latia-ramona.jpeg" alt="Cibao Latia Ramona">
-                <div class="horse-info">
-                    <h3>Cibao Latia Ramona</h3>
-                    <div class="horse-details">
-                        <div class="detail-row"><span class="label">Sexo</span><span class="value">Hembra</span></div>
-                        <div class="detail-row"><span class="label">Edad</span><span class="value">6 años</span></div>
-                        <div class="detail-row"><span class="label">Fecha de compra</span><span class="value">Octubre 2023</span></div>
-                        <div class="detail-row"><span class="label">Taco</span><span class="value">51</span></div>
-                    </div>
-                    <div class="horse-details horse-details-en">
-                        <div class="detail-row"><span class="label">Sex</span><span class="value">Mare</span></div>
-                        <div class="detail-row"><span class="label">Age</span><span class="value">6 years</span></div>
-                        <div class="detail-row"><span class="label">Date purchased</span><span class="value">October 2023</span></div>
-                        <div class="detail-row"><span class="label">Mallet size</span><span class="value">51</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 3. BIG BAY -->
-            <div class="horse-card">
-                <img src="big-bay.jpeg" alt="Cibao Big Bay">
-                <div class="horse-info">
-                    <h3>Cibao Big Bay</h3>
-                    <div class="horse-details">
-                        <div class="detail-row"><span class="label">Sexo</span><span class="value">Hembra</span></div>
-                        <div class="detail-row"><span class="label">Edad</span><span class="value">6 años</span></div>
-                        <div class="detail-row"><span class="label">Fecha de compra</span><span class="value">Diciembre 2023</span></div>
-                        <div class="detail-row"><span class="label">Taco</span><span class="value">51</span></div>
-                    </div>
-                    <div class="horse-details horse-details-en">
-                        <div class="detail-row"><span class="label">Sex</span><span class="value">Mare</span></div>
-                        <div class="detail-row"><span class="label">Age</span><span class="value">6 years</span></div>
-                        <div class="detail-row"><span class="label">Date purchased</span><span class="value">December 2023</span></div>
-                        <div class="detail-row"><span class="label">Mallet size</span><span class="value">51</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4. CUARTETERA -->
-            <div class="horse-card">
-                <img src="cuartetera.jpeg" alt="Cibao Cuartetera">
-                <div class="horse-info">
-                    <h3>Cibao Cuartetera</h3>
-                    <div class="horse-details">
-                        <div class="detail-row"><span class="label">Sexo</span><span class="value">Hembra</span></div>
-                        <div class="detail-row"><span class="label">Edad</span><span class="value">6 años</span></div>
-                        <div class="detail-row"><span class="label">Fecha de compra</span><span class="value">Octubre 2023</span></div>
-                        <div class="detail-row"><span class="label">Taco</span><span class="value">53</span></div>
-                    </div>
-                    <div class="horse-details horse-details-en">
-                        <div class="detail-row"><span class="label">Sex</span><span class="value">Mare</span></div>
-                        <div class="detail-row"><span class="label">Age</span><span class="value">6 years</span></div>
-                        <div class="detail-row"><span class="label">Date purchased</span><span class="value">October 2023</span></div>
-                        <div class="detail-row"><span class="label">Mallet size</span><span class="value">53</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 5. GUSTAVA -->
-            <div class="horse-card">
-                <img src="gustava.jpeg" alt="Cibao Gustava">
-                <div class="horse-info">
-                    <h3>Cibao Gustava</h3>
-                    <div class="horse-details">
-                        <div class="detail-row"><span class="label">Sexo</span><span class="value">Hembra</span></div>
-                        <div class="detail-row"><span class="label">Edad</span><span class="value">4 años</span></div>
-                        <div class="detail-row"><span class="label">Fecha de compra</span><span class="value">Diciembre 2023</span></div>
-                        <div class="detail-row"><span class="label">Taco</span><span class="value">50</span></div>
-                    </div>
-                    <div class="horse-details horse-details-en">
-                        <div class="detail-row"><span class="label">Sex</span><span class="value">Mare</span></div>
-                        <div class="detail-row"><span class="label">Age</span><span class="value">4 years</span></div>
-                        <div class="detail-row"><span class="label">Date purchased</span><span class="value">December 2023</span></div>
-                        <div class="detail-row"><span class="label">Mallet size</span><span class="value">50</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 6. NEVADITO -->
-            <div class="horse-card">
-                <img src="nevadito.jpeg" alt="Cibao Nevadito">
-                <div class="horse-info">
-                    <h3>Cibao Nevadito</h3>
-                    <div class="horse-details">
-                        <div class="detail-row"><span class="label">Sexo</span><span class="value">Macho</span></div>
-                        <div class="detail-row"><span class="label">Edad</span><span class="value">6 años</span></div>
-                        <div class="detail-row"><span class="label">Fecha de compra</span><span class="value">Diciembre 2023</span></div>
-                        <div class="detail-row"><span class="label">Taco</span><span class="value">51</span></div>
-                    </div>
-                    <div class="horse-details horse-details-en">
-                        <div class="detail-row"><span class="label">Sex</span><span class="value">Gelding</span></div>
-                        <div class="detail-row"><span class="label">Age</span><span class="value">6 years</span></div>
-                        <div class="detail-row"><span class="label">Date purchased</span><span class="value">December 2023</span></div>
-                        <div class="detail-row"><span class="label">Mallet size</span><span class="value">51</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 7. ORO CAÑITA VOLADORA -->
-            <div class="horse-card">
-                <img src="canita-voladora.jpeg" alt="Cibao Oro Cañita Voladora">
-                <div class="horse-info">
-                    <h3>Cibao Oro Cañita Voladora</h3>
-                    <div class="horse-details">
-                        <div class="detail-row"><span class="label">Sexo</span><span class="value">Hembra</span></div>
-                        <div class="detail-row"><span class="label">Edad</span><span class="value">6 años</span></div>
-                        <div class="detail-row"><span class="label">Fecha de compra</span><span class="value">Octubre 2023</span></div>
-                        <div class="detail-row"><span class="label">Taco</span><span class="value">51</span></div>
-                    </div>
-                    <div class="horse-details horse-details-en">
-                        <div class="detail-row"><span class="label">Sex</span><span class="value">Mare</span></div>
-                        <div class="detail-row"><span class="label">Age</span><span class="value">6 years</span></div>
-                        <div class="detail-row"><span class="label">Date purchased</span><span class="value">October 2023</span></div>
-                        <div class="detail-row"><span class="label">Mallet size</span><span class="value">51</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 8. JAZZ -->
-            <div class="horse-card">
-                <img src="jazz.jpeg" alt="Cibao Jazz">
-                <div class="horse-info">
-                    <h3>Cibao Jazz</h3>
-                    <div class="horse-details">
-                        <div class="detail-row"><span class="label">Sexo</span><span class="value">Hembra</span></div>
-                        <div class="detail-row"><span class="label">Edad</span><span class="value">6 años</span></div>
-                        <div class="detail-row"><span class="label">Fecha de compra</span><span class="value">Octubre 2023</span></div>
-                        <div class="detail-row"><span class="label">Taco</span><span class="value">52</span></div>
-                    </div>
-                    <div class="horse-details horse-details-en">
-                        <div class="detail-row"><span class="label">Sex</span><span class="value">Mare</span></div>
-                        <div class="detail-row"><span class="label">Age</span><span class="value">6 years</span></div>
-                        <div class="detail-row"><span class="label">Date purchased</span><span class="value">October 2023</span></div>
-                        <div class="detail-row"><span class="label">Mallet size</span><span class="value">52</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 9. MINIFALDA -->
-            <div class="horse-card">
-                <img src="minifalda.jpeg" alt="Cibao Minifalda">
-                <div class="horse-info">
-                    <h3>Cibao Minifalda</h3>
-                    <div class="horse-details">
-                        <div class="detail-row"><span class="label">Sexo</span><span class="value">Hembra</span></div>
-                        <div class="detail-row"><span class="label">Edad</span><span class="value">5 años</span></div>
-                        <div class="detail-row"><span class="label">Fecha de compra</span><span class="value">Octubre 2023</span></div>
-                        <div class="detail-row"><span class="label">Taco</span><span class="value">51</span></div>
-                    </div>
-                    <div class="horse-details horse-details-en">
-                        <div class="detail-row"><span class="label">Sex</span><span class="value">Mare</span></div>
-                        <div class="detail-row"><span class="label">Age</span><span class="value">5 years</span></div>
-                        <div class="detail-row"><span class="label">Date purchased</span><span class="value">October 2023</span></div>
-                        <div class="detail-row"><span class="label">Mallet size</span><span class="value">51</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 10. CALLAWAY -->
-            <div class="horse-card">
-                <img src="callaway.jpeg" alt="Cibao Callaway">
-                <div class="horse-info">
-                    <h3>Cibao Callaway</h3>
-                    <div class="horse-details">
-                        <div class="detail-row"><span class="label">Sexo</span><span class="value">Hembra</span></div>
-                        <div class="detail-row"><span class="label">Edad</span><span class="value">6 años</span></div>
-                        <div class="detail-row"><span class="label">Fecha de compra</span><span class="value">Diciembre 2023</span></div>
-                        <div class="detail-row"><span class="label">Taco</span><span class="value">50</span></div>
-                    </div>
-                    <div class="horse-details horse-details-en">
-                        <div class="detail-row"><span class="label">Sex</span><span class="value">Mare</span></div>
-                        <div class="detail-row"><span class="label">Age</span><span class="value">6 years</span></div>
-                        <div class="detail-row"><span class="label">Date purchased</span><span class="value">December 2023</span></div>
-                        <div class="detail-row"><span class="label">Mallet size</span><span class="value">50</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 11. CUARESMA -->
-            <div class="horse-card">
-                <img src="cuaresma.jpeg" alt="Cibao Cuaresma">
-                <div class="horse-info">
-                    <h3>Cibao Cuaresma</h3>
-                    <div class="horse-details">
-                        <div class="detail-row"><span class="label">Sexo</span><span class="value">Hembra</span></div>
-                        <div class="detail-row"><span class="label">Edad</span><span class="value">6 años</span></div>
-                        <div class="detail-row"><span class="label">Fecha de compra</span><span class="value">Octubre 2023</span></div>
-                        <div class="detail-row"><span class="label">Taco</span><span class="value">52</span></div>
-                    </div>
-                    <div class="horse-details horse-details-en">
-                        <div class="detail-row"><span class="label">Sex</span><span class="value">Mare</span></div>
-                        <div class="detail-row"><span class="label">Age</span><span class="value">6 years</span></div>
-                        <div class="detail-row"><span class="label">Date purchased</span><span class="value">October 2023</span></div>
-                        <div class="detail-row"><span class="label">Mallet size</span><span class="value">52</span></div>
-                    </div>
-                </div>
-            </div>
-
+    <section class="section section-alt" id="horses">
+      <div class="container">
+        <div class="horses-head reveal">
+          <div class="section-head">
+            <p class="eyebrow"><span lang="en">For sale</span><span lang="es">En venta</span></p>
+            <h2><span lang="en">Our horses</span><span lang="es">Nuestros caballos</span></h2>
+            <p>
+              <span lang="en">Ready for high-speed tournaments and available for sale.</span>
+              <span lang="es">Preparados para torneos de alta velocidad y listos para la venta.</span>
+            </p>
+          </div>
+          <p class="horses-count" aria-hidden="true">11</p>
         </div>
+
+        <ul class="horse-grid">
+        <li class="horse reveal" id="horse-drogba">
+          <div class="horse-photo">
+            <img src="assets/img/horses/drogba-640.webp" srcset="assets/img/horses/drogba-640.webp 640w, assets/img/horses/drogba-1080.webp 1080w" sizes="(max-width: 620px) calc(100vw - 32px), (max-width: 1020px) 46vw, 390px" width="640" height="533" loading="lazy" decoding="async" alt="Cibao Drogba">
+          </div>
+          <div class="horse-body">
+            <h3><button class="horse-open" type="button" data-index="0" aria-haspopup="dialog"><small>Cibao</small>Drogba</button></h3>
+            <dl class="meta">
+              <div><dt><span lang="en">Sex</span><span lang="es">Sexo</span></dt><dd><span lang="en">Mare</span><span lang="es">Hembra</span></dd></div>
+              <div><dt><span lang="en">Age</span><span lang="es">Edad</span></dt><dd><span lang="en">6 years</span><span lang="es">6 años</span></dd></div>
+              <div><dt><span lang="en">Purchased</span><span lang="es">Compra</span></dt><dd><span lang="en">December 2023</span><span lang="es">Diciembre 2023</span></dd></div>
+              <div><dt><span lang="en">Mallet size</span><span lang="es">Taco</span></dt><dd>51</dd></div>
+            </dl>
+            <span class="horse-more" aria-hidden="true"><span lang="en">View details</span><span lang="es">Ver ficha</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </li>
+        <li class="horse reveal" id="horse-latia-ramona">
+          <div class="horse-photo">
+            <img src="assets/img/horses/latia-ramona-640.webp" srcset="assets/img/horses/latia-ramona-640.webp 640w, assets/img/horses/latia-ramona-1080.webp 1080w" sizes="(max-width: 620px) calc(100vw - 32px), (max-width: 1020px) 46vw, 390px" width="640" height="533" loading="lazy" decoding="async" alt="Cibao Latia Ramona">
+          </div>
+          <div class="horse-body">
+            <h3><button class="horse-open" type="button" data-index="1" aria-haspopup="dialog"><small>Cibao</small>Latia Ramona</button></h3>
+            <dl class="meta">
+              <div><dt><span lang="en">Sex</span><span lang="es">Sexo</span></dt><dd><span lang="en">Mare</span><span lang="es">Hembra</span></dd></div>
+              <div><dt><span lang="en">Age</span><span lang="es">Edad</span></dt><dd><span lang="en">6 years</span><span lang="es">6 años</span></dd></div>
+              <div><dt><span lang="en">Purchased</span><span lang="es">Compra</span></dt><dd><span lang="en">October 2023</span><span lang="es">Octubre 2023</span></dd></div>
+              <div><dt><span lang="en">Mallet size</span><span lang="es">Taco</span></dt><dd>51</dd></div>
+            </dl>
+            <span class="horse-more" aria-hidden="true"><span lang="en">View details</span><span lang="es">Ver ficha</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </li>
+        <li class="horse reveal" id="horse-big-bay">
+          <div class="horse-photo">
+            <img src="assets/img/horses/big-bay-640.webp" srcset="assets/img/horses/big-bay-640.webp 640w, assets/img/horses/big-bay-1080.webp 1080w" sizes="(max-width: 620px) calc(100vw - 32px), (max-width: 1020px) 46vw, 390px" width="640" height="533" loading="lazy" decoding="async" alt="Cibao Big Bay">
+          </div>
+          <div class="horse-body">
+            <h3><button class="horse-open" type="button" data-index="2" aria-haspopup="dialog"><small>Cibao</small>Big Bay</button></h3>
+            <dl class="meta">
+              <div><dt><span lang="en">Sex</span><span lang="es">Sexo</span></dt><dd><span lang="en">Mare</span><span lang="es">Hembra</span></dd></div>
+              <div><dt><span lang="en">Age</span><span lang="es">Edad</span></dt><dd><span lang="en">6 years</span><span lang="es">6 años</span></dd></div>
+              <div><dt><span lang="en">Purchased</span><span lang="es">Compra</span></dt><dd><span lang="en">December 2023</span><span lang="es">Diciembre 2023</span></dd></div>
+              <div><dt><span lang="en">Mallet size</span><span lang="es">Taco</span></dt><dd>51</dd></div>
+            </dl>
+            <span class="horse-more" aria-hidden="true"><span lang="en">View details</span><span lang="es">Ver ficha</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </li>
+        <li class="horse reveal" id="horse-cuartetera">
+          <div class="horse-photo">
+            <img src="assets/img/horses/cuartetera-640.webp" srcset="assets/img/horses/cuartetera-640.webp 640w, assets/img/horses/cuartetera-1080.webp 1080w" sizes="(max-width: 620px) calc(100vw - 32px), (max-width: 1020px) 46vw, 390px" width="640" height="533" loading="lazy" decoding="async" alt="Cibao Cuartetera">
+          </div>
+          <div class="horse-body">
+            <h3><button class="horse-open" type="button" data-index="3" aria-haspopup="dialog"><small>Cibao</small>Cuartetera</button></h3>
+            <dl class="meta">
+              <div><dt><span lang="en">Sex</span><span lang="es">Sexo</span></dt><dd><span lang="en">Mare</span><span lang="es">Hembra</span></dd></div>
+              <div><dt><span lang="en">Age</span><span lang="es">Edad</span></dt><dd><span lang="en">6 years</span><span lang="es">6 años</span></dd></div>
+              <div><dt><span lang="en">Purchased</span><span lang="es">Compra</span></dt><dd><span lang="en">October 2023</span><span lang="es">Octubre 2023</span></dd></div>
+              <div><dt><span lang="en">Mallet size</span><span lang="es">Taco</span></dt><dd>53</dd></div>
+            </dl>
+            <span class="horse-more" aria-hidden="true"><span lang="en">View details</span><span lang="es">Ver ficha</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </li>
+        <li class="horse reveal" id="horse-gustava">
+          <div class="horse-photo">
+            <img src="assets/img/horses/gustava-640.webp" srcset="assets/img/horses/gustava-640.webp 640w, assets/img/horses/gustava-1080.webp 1080w" sizes="(max-width: 620px) calc(100vw - 32px), (max-width: 1020px) 46vw, 390px" width="640" height="533" loading="lazy" decoding="async" alt="Cibao Gustava">
+          </div>
+          <div class="horse-body">
+            <h3><button class="horse-open" type="button" data-index="4" aria-haspopup="dialog"><small>Cibao</small>Gustava</button></h3>
+            <dl class="meta">
+              <div><dt><span lang="en">Sex</span><span lang="es">Sexo</span></dt><dd><span lang="en">Mare</span><span lang="es">Hembra</span></dd></div>
+              <div><dt><span lang="en">Age</span><span lang="es">Edad</span></dt><dd><span lang="en">4 years</span><span lang="es">4 años</span></dd></div>
+              <div><dt><span lang="en">Purchased</span><span lang="es">Compra</span></dt><dd><span lang="en">December 2023</span><span lang="es">Diciembre 2023</span></dd></div>
+              <div><dt><span lang="en">Mallet size</span><span lang="es">Taco</span></dt><dd>50</dd></div>
+            </dl>
+            <span class="horse-more" aria-hidden="true"><span lang="en">View details</span><span lang="es">Ver ficha</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </li>
+        <li class="horse reveal" id="horse-nevadito">
+          <div class="horse-photo">
+            <img src="assets/img/horses/nevadito-640.webp" srcset="assets/img/horses/nevadito-640.webp 640w, assets/img/horses/nevadito-1080.webp 1080w" sizes="(max-width: 620px) calc(100vw - 32px), (max-width: 1020px) 46vw, 390px" width="640" height="533" loading="lazy" decoding="async" alt="Cibao Nevadito">
+          </div>
+          <div class="horse-body">
+            <h3><button class="horse-open" type="button" data-index="5" aria-haspopup="dialog"><small>Cibao</small>Nevadito</button></h3>
+            <dl class="meta">
+              <div><dt><span lang="en">Sex</span><span lang="es">Sexo</span></dt><dd><span lang="en">Gelding</span><span lang="es">Macho</span></dd></div>
+              <div><dt><span lang="en">Age</span><span lang="es">Edad</span></dt><dd><span lang="en">6 years</span><span lang="es">6 años</span></dd></div>
+              <div><dt><span lang="en">Purchased</span><span lang="es">Compra</span></dt><dd><span lang="en">December 2023</span><span lang="es">Diciembre 2023</span></dd></div>
+              <div><dt><span lang="en">Mallet size</span><span lang="es">Taco</span></dt><dd>51</dd></div>
+            </dl>
+            <span class="horse-more" aria-hidden="true"><span lang="en">View details</span><span lang="es">Ver ficha</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </li>
+        <li class="horse reveal" id="horse-canita-voladora">
+          <div class="horse-photo">
+            <img src="assets/img/horses/canita-voladora-640.webp" srcset="assets/img/horses/canita-voladora-640.webp 640w, assets/img/horses/canita-voladora-769.webp 769w" sizes="(max-width: 620px) calc(100vw - 32px), (max-width: 1020px) 46vw, 390px" width="640" height="533" loading="lazy" decoding="async" alt="Cibao Oro Cañita Voladora">
+          </div>
+          <div class="horse-body">
+            <h3><button class="horse-open" type="button" data-index="6" aria-haspopup="dialog"><small>Cibao</small>Oro Cañita Voladora</button></h3>
+            <dl class="meta">
+              <div><dt><span lang="en">Sex</span><span lang="es">Sexo</span></dt><dd><span lang="en">Mare</span><span lang="es">Hembra</span></dd></div>
+              <div><dt><span lang="en">Age</span><span lang="es">Edad</span></dt><dd><span lang="en">6 years</span><span lang="es">6 años</span></dd></div>
+              <div><dt><span lang="en">Purchased</span><span lang="es">Compra</span></dt><dd><span lang="en">October 2023</span><span lang="es">Octubre 2023</span></dd></div>
+              <div><dt><span lang="en">Mallet size</span><span lang="es">Taco</span></dt><dd>51</dd></div>
+            </dl>
+            <span class="horse-more" aria-hidden="true"><span lang="en">View details</span><span lang="es">Ver ficha</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </li>
+        <li class="horse reveal" id="horse-jazz">
+          <div class="horse-photo">
+            <img src="assets/img/horses/jazz-640.webp" srcset="assets/img/horses/jazz-640.webp 640w, assets/img/horses/jazz-1080.webp 1080w" sizes="(max-width: 620px) calc(100vw - 32px), (max-width: 1020px) 46vw, 390px" width="640" height="533" loading="lazy" decoding="async" alt="Cibao Jazz">
+          </div>
+          <div class="horse-body">
+            <h3><button class="horse-open" type="button" data-index="7" aria-haspopup="dialog"><small>Cibao</small>Jazz</button></h3>
+            <dl class="meta">
+              <div><dt><span lang="en">Sex</span><span lang="es">Sexo</span></dt><dd><span lang="en">Mare</span><span lang="es">Hembra</span></dd></div>
+              <div><dt><span lang="en">Age</span><span lang="es">Edad</span></dt><dd><span lang="en">6 years</span><span lang="es">6 años</span></dd></div>
+              <div><dt><span lang="en">Purchased</span><span lang="es">Compra</span></dt><dd><span lang="en">October 2023</span><span lang="es">Octubre 2023</span></dd></div>
+              <div><dt><span lang="en">Mallet size</span><span lang="es">Taco</span></dt><dd>52</dd></div>
+            </dl>
+            <span class="horse-more" aria-hidden="true"><span lang="en">View details</span><span lang="es">Ver ficha</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </li>
+        <li class="horse reveal" id="horse-minifalda">
+          <div class="horse-photo">
+            <img src="assets/img/horses/minifalda-640.webp" srcset="assets/img/horses/minifalda-640.webp 640w, assets/img/horses/minifalda-905.webp 905w" sizes="(max-width: 620px) calc(100vw - 32px), (max-width: 1020px) 46vw, 390px" width="640" height="533" loading="lazy" decoding="async" alt="Cibao Minifalda">
+          </div>
+          <div class="horse-body">
+            <h3><button class="horse-open" type="button" data-index="8" aria-haspopup="dialog"><small>Cibao</small>Minifalda</button></h3>
+            <dl class="meta">
+              <div><dt><span lang="en">Sex</span><span lang="es">Sexo</span></dt><dd><span lang="en">Mare</span><span lang="es">Hembra</span></dd></div>
+              <div><dt><span lang="en">Age</span><span lang="es">Edad</span></dt><dd><span lang="en">5 years</span><span lang="es">5 años</span></dd></div>
+              <div><dt><span lang="en">Purchased</span><span lang="es">Compra</span></dt><dd><span lang="en">October 2023</span><span lang="es">Octubre 2023</span></dd></div>
+              <div><dt><span lang="en">Mallet size</span><span lang="es">Taco</span></dt><dd>51</dd></div>
+            </dl>
+            <span class="horse-more" aria-hidden="true"><span lang="en">View details</span><span lang="es">Ver ficha</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </li>
+        <li class="horse reveal" id="horse-callaway">
+          <div class="horse-photo">
+            <img src="assets/img/horses/callaway-640.webp" srcset="assets/img/horses/callaway-640.webp 640w, assets/img/horses/callaway-1032.webp 1032w" sizes="(max-width: 620px) calc(100vw - 32px), (max-width: 1020px) 46vw, 390px" width="640" height="533" loading="lazy" decoding="async" alt="Cibao Callaway">
+          </div>
+          <div class="horse-body">
+            <h3><button class="horse-open" type="button" data-index="9" aria-haspopup="dialog"><small>Cibao</small>Callaway</button></h3>
+            <dl class="meta">
+              <div><dt><span lang="en">Sex</span><span lang="es">Sexo</span></dt><dd><span lang="en">Mare</span><span lang="es">Hembra</span></dd></div>
+              <div><dt><span lang="en">Age</span><span lang="es">Edad</span></dt><dd><span lang="en">6 years</span><span lang="es">6 años</span></dd></div>
+              <div><dt><span lang="en">Purchased</span><span lang="es">Compra</span></dt><dd><span lang="en">December 2023</span><span lang="es">Diciembre 2023</span></dd></div>
+              <div><dt><span lang="en">Mallet size</span><span lang="es">Taco</span></dt><dd>50</dd></div>
+            </dl>
+            <span class="horse-more" aria-hidden="true"><span lang="en">View details</span><span lang="es">Ver ficha</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </li>
+        <li class="horse reveal" id="horse-cuaresma">
+          <div class="horse-photo">
+            <img src="assets/img/horses/cuaresma-640.webp" srcset="assets/img/horses/cuaresma-640.webp 640w, assets/img/horses/cuaresma-928.webp 928w" sizes="(max-width: 620px) calc(100vw - 32px), (max-width: 1020px) 46vw, 390px" width="640" height="533" loading="lazy" decoding="async" alt="Cibao Cuaresma">
+          </div>
+          <div class="horse-body">
+            <h3><button class="horse-open" type="button" data-index="10" aria-haspopup="dialog"><small>Cibao</small>Cuaresma</button></h3>
+            <dl class="meta">
+              <div><dt><span lang="en">Sex</span><span lang="es">Sexo</span></dt><dd><span lang="en">Mare</span><span lang="es">Hembra</span></dd></div>
+              <div><dt><span lang="en">Age</span><span lang="es">Edad</span></dt><dd><span lang="en">6 years</span><span lang="es">6 años</span></dd></div>
+              <div><dt><span lang="en">Purchased</span><span lang="es">Compra</span></dt><dd><span lang="en">October 2023</span><span lang="es">Octubre 2023</span></dd></div>
+              <div><dt><span lang="en">Mallet size</span><span lang="es">Taco</span></dt><dd>52</dd></div>
+            </dl>
+            <span class="horse-more" aria-hidden="true"><span lang="en">View details</span><span lang="es">Ver ficha</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </li>
+          <li class="horse horse-cta on-dark reveal">
+            <p class="eyebrow"><span lang="en">Contact</span><span lang="es">Contacto</span></p>
+            <p class="cta-title"><span lang="en">For inquiries about our horses</span><span lang="es">Para consultas sobre nuestros caballos</span></p>
+            <a class="cta-phone" href="tel:+34682327444">+34 682 327 444</a>
+            <a class="btn btn-primary" href="https://wa.me/34682327444" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 11.6a8 8 0 0 1-11.8 7L4 20l1.4-4.1A8 8 0 1 1 20 11.6z"/></svg>
+              WhatsApp
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- VIDEO -->
+    <section class="section section-dark on-dark" id="video">
+      <div class="container">
+        <div class="section-head video-head reveal">
+          <p class="eyebrow">YouTube</p>
+          <h2><span lang="en">The entire journey was documented.</span><span lang="es">Todo el proceso quedó registrado.</span></h2>
+          <p>
+            <span lang="en">Watch the horses in action and follow their progress from day one on our YouTube channel.</span>
+            <span lang="es">Podés ver a los caballos en acción y su evolución desde el primer día en nuestro canal de YouTube.</span>
+          </p>
+        </div>
+
+        <!-- To feature a video, paste its YouTube ID into data-youtube-id (the part after v= in the link). -->
+        <div class="video-frame reveal" id="video-frame" data-youtube-id="">
+          <a class="video-poster" href="https://www.youtube.com/@cibao_la_pampa" target="_blank" rel="noopener">
+            <img src="assets/img/video-poster-960.webp" srcset="assets/img/video-poster-960.webp 960w, assets/img/video-poster-1600.webp 1600w" sizes="(max-width: 1140px) 100vw, 1100px" width="1600" height="900" loading="lazy" decoding="async" alt="">
+            <span class="video-play">
+              <span class="video-play-icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4.5v15l13-7.5z"/></svg></span>
+              <span class="video-play-label" data-when="channel"><span lang="en">Watch on YouTube</span><span lang="es">Ver en YouTube</span></span>
+              <span class="video-play-label" data-when="video" hidden><span lang="en">Play video</span><span lang="es">Ver video</span></span>
+            </span>
+          </a>
+        </div>
+
+        <div class="video-foot reveal">
+          <a class="btn btn-ghost" href="https://www.youtube.com/@cibao_la_pampa" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="3.5"/><path d="M10 9.2v5.6l4.8-2.8z" fill="currentColor" stroke="none"/></svg>
+            YouTube: Cibao La Pampa
+          </a>
+        </div>
+      </div>
     </section>
 
     <!-- CONTACT -->
-    <section id="contacto" class="contact-section">
-        <h2>Contacto / Contact</h2>
-        <p>Para consultas sobre nuestros caballos / For inquiries about our horses:</p>
-        <p class="phone-link"><a href="tel:+34682327444">+34 682 327 444</a></p>
-        <p style="margin-top: 20px;">
-            <a href="https://www.youtube.com/@cibao_la_pampa" target="_blank">YouTube: Cibao La Pampa</a>
-        </p>
+    <section class="section" id="contact">
+      <div class="container contact-grid">
+        <div class="section-head reveal">
+          <p class="eyebrow"><span lang="en">Contact</span><span lang="es">Contacto</span></p>
+          <h2><span lang="en">For inquiries about our horses</span><span lang="es">Para consultas sobre nuestros caballos</span></h2>
+        </div>
+        <div class="reveal">
+          <a class="phone" href="tel:+34682327444">+34 682 327 444</a>
+          <div class="contact-actions">
+            <a class="btn btn-primary" href="https://wa.me/34682327444" target="_blank" rel="noopener" data-wa>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 11.6a8 8 0 0 1-11.8 7L4 20l1.4-4.1A8 8 0 1 1 20 11.6z"/></svg>
+              WhatsApp
+            </a>
+            <a class="btn btn-ghost" href="tel:+34682327444">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
+              <span lang="en">Call</span><span lang="es">Llamar</span>
+            </a>
+          </div>
+        </div>
+      </div>
     </section>
+  </main>
 
-    <!-- FOOTER -->
-    <footer>
-        <p>&copy; 2026 Cría Cibao La Pampa — La Pampa, Argentina</p>
-    </footer>
+  <footer class="site-footer on-dark">
+    <div class="container">
+      <div class="footer-top">
+        <a class="brand" href="#top">
+          <span class="brand-mark" aria-hidden="true">C</span>
+          <span class="brand-name">Cría Cibao La Pampa</span>
+        </a>
+        <ul class="footer-links">
+          <li><a href="#about"><span lang="en">About</span><span lang="es">Quiénes somos</span></a></li>
+          <li><a href="#horses"><span lang="en">Horses</span><span lang="es">Caballos</span></a></li>
+          <li><a href="#contact"><span lang="en">Contact</span><span lang="es">Contacto</span></a></li>
+          <li><a href="https://www.youtube.com/@cibao_la_pampa" target="_blank" rel="noopener">YouTube</a></li>
+        </ul>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Cría Cibao La Pampa · La Pampa, Argentina</p>
+        <p><span lang="en">A project by Ramón Pepa.</span><span lang="es">Un proyecto de Ramón Pepa.</span></p>
+      </div>
+    </div>
+  </footer>
 
+  <!-- Horse detail -->
+  <dialog class="horse-dialog" id="horse-dialog" aria-labelledby="dlg-name">
+    <button class="icon-btn dlg-close" type="button" data-close data-label-en="Close" data-label-es="Cerrar" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="dlg-grid">
+      <figure class="dlg-photo"><img id="dlg-img" src="" alt="" width="1600" height="1201"></figure>
+      <div class="dlg-body">
+        <div>
+          <p class="eyebrow">Cibao</p>
+        </div>
+        <h2 id="dlg-name"></h2>
+        <dl class="meta">
+          <div><dt><span lang="en">Sex</span><span lang="es">Sexo</span></dt><dd id="dlg-sex"></dd></div>
+          <div><dt><span lang="en">Age</span><span lang="es">Edad</span></dt><dd id="dlg-age"></dd></div>
+          <div><dt><span lang="en">Date purchased</span><span lang="es">Fecha de compra</span></dt><dd id="dlg-purchased"></dd></div>
+          <div><dt><span lang="en">Mallet size</span><span lang="es">Taco</span></dt><dd id="dlg-mallet"></dd></div>
+        </dl>
+        <div class="dlg-actions">
+          <a class="btn btn-primary" id="dlg-wa" href="https://wa.me/34682327444" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 11.6a8 8 0 0 1-11.8 7L4 20l1.4-4.1A8 8 0 1 1 20 11.6z"/></svg>
+            <span lang="en">Enquire on WhatsApp</span><span lang="es">Consultar por WhatsApp</span>
+          </a>
+          <a class="btn btn-ghost" href="tel:+34682327444"><span lang="en">Call</span><span lang="es">Llamar</span> +34 682 327 444</a>
+        </div>
+        <div class="dlg-nav">
+          <button class="icon-btn" type="button" data-step="-1" data-label-en="Previous horse" data-label-es="Caballo anterior" aria-label="Previous horse">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          </button>
+          <span id="dlg-count" aria-live="polite"></span>
+          <button class="icon-btn" type="button" data-step="1" data-label-en="Next horse" data-label-es="Caballo siguiente" aria-label="Next horse">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <script type="application/json" id="horse-data">[{"slug": "drogba", "name": "Drogba", "full": "assets/img/horses/drogba-full.webp", "w": 1600, "h": 1201, "sex": ["Mare", "Hembra"], "age": ["6 years", "6 años"], "purchased": ["December 2023", "Diciembre 2023"], "mallet": "51"}, {"slug": "latia-ramona", "name": "Latia Ramona", "full": "assets/img/horses/latia-ramona-full.webp", "w": 1600, "h": 1201, "sex": ["Mare", "Hembra"], "age": ["6 years", "6 años"], "purchased": ["October 2023", "Octubre 2023"], "mallet": "51"}, {"slug": "big-bay", "name": "Big Bay", "full": "assets/img/horses/big-bay-full.webp", "w": 1600, "h": 1201, "sex": ["Mare", "Hembra"], "age": ["6 years", "6 años"], "purchased": ["December 2023", "Diciembre 2023"], "mallet": "51"}, {"slug": "cuartetera", "name": "Cuartetera", "full": "assets/img/horses/cuartetera-full.webp", "w": 1600, "h": 1392, "sex": ["Mare", "Hembra"], "age": ["6 years", "6 años"], "purchased": ["October 2023", "Octubre 2023"], "mallet": "53"}, {"slug": "gustava", "name": "Gustava", "full": "assets/img/horses/gustava-full.webp", "w": 1600, "h": 1201, "sex": ["Mare", "Hembra"], "age": ["4 years", "4 años"], "purchased": ["December 2023", "Diciembre 2023"], "mallet": "50"}, {"slug": "nevadito", "name": "Nevadito", "full": "assets/img/horses/nevadito-full.webp", "w": 1600, "h": 1201, "sex": ["Gelding", "Macho"], "age": ["6 years", "6 años"], "purchased": ["December 2023", "Diciembre 2023"], "mallet": "51"}, {"slug": "canita-voladora", "name": "Oro Cañita Voladora", "full": "assets/img/horses/canita-voladora-full.webp", "w": 769, "h": 836, "sex": ["Mare", "Hembra"], "age": ["6 years", "6 años"], "purchased": ["October 2023", "Octubre 2023"], "mallet": "51"}, {"slug": "jazz", "name": "Jazz", "full": "assets/img/horses/jazz-full.webp", "w": 1600, "h": 1201, "sex": ["Mare", "Hembra"], "age": ["6 years", "6 años"], "purchased": ["October 2023", "Octubre 2023"], "mallet": "52"}, {"slug": "minifalda", "name": "Minifalda", "full": "assets/img/horses/minifalda-full.webp", "w": 905, "h": 842, "sex": ["Mare", "Hembra"], "age": ["5 years", "5 años"], "purchased": ["October 2023", "Octubre 2023"], "mallet": "51"}, {"slug": "callaway", "name": "Callaway", "full": "assets/img/horses/callaway-full.webp", "w": 1072, "h": 860, "sex": ["Mare", "Hembra"], "age": ["6 years", "6 años"], "purchased": ["December 2023", "Diciembre 2023"], "mallet": "50"}, {"slug": "cuaresma", "name": "Cuaresma", "full": "assets/img/horses/cuaresma-full.webp", "w": 928, "h": 848, "sex": ["Mare", "Hembra"], "age": ["6 years", "6 años"], "purchased": ["October 2023", "Octubre 2023"], "mallet": "52"}]</script>
+  <script src="assets/js/site.js" defer></script>
 </body>
 </html>

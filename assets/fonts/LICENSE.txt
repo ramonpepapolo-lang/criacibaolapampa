@@ -1,0 +1,6 @@
+Fonts in this folder are licensed under the SIL Open Font License, Version 1.1
+(https://openfontlicense.org).
+
+- Instrument Serif: Copyright 2022 The Instrument Serif Project Authors
+  (https://github.com/Instrument/instrument-serif)
+- Inter: Copyright 2020 The Inter Project Authors (https://github.com/rsms/inter)
