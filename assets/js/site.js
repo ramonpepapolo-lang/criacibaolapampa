@@ -86,6 +86,7 @@
     document.getElementById('dlg-age').innerHTML = bi(h.age);
     document.getElementById('dlg-purchased').innerHTML = bi(h.purchased);
     document.getElementById('dlg-mallet').textContent = h.mallet;
+    document.getElementById('dlg-sold').hidden = !h.sold;
     document.getElementById('dlg-count').textContent = (i + 1) + ' / ' + horses.length;
     var mail = MAIL[lang()](full);
     document.getElementById('dlg-mail').href = 'mailto:' + EMAIL +

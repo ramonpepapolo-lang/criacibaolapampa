@@ -32,6 +32,7 @@
   --muted: #5b645d;
   --brass: #c19a55;
   --brass-dark: #7a5d2b;
+  --sold: #b3261e;
   --cream: #f5f1e8;
   --cream-muted: rgba(245, 241, 232, 0.72);
   --line: rgba(19, 35, 26, 0.14);
@@ -477,6 +478,7 @@ html[data-lang="es"] [lang="en"]:not(html) { display: none !important; }
   box-shadow: 0 18px 40px -22px rgba(19, 35, 26, 0.45);
 }
 .horse-photo {
+  position: relative;
   aspect-ratio: 6 / 5;
   overflow: hidden;
   background: #d9d2c2;
@@ -548,6 +550,28 @@ html[data-lang="es"] [lang="en"]:not(html) { display: none !important; }
 .horse-more svg { width: 16px; height: 16px; transition: transform 0.3s var(--ease); }
 .horse:hover .horse-more svg { transform: translateX(4px); }
 
+/* Sold horses: red band across the photo, top left to bottom right */
+.sold-band {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 160%;
+  padding: 12px 0;
+  transform: translate(-50%, -50%) rotate(39.8deg);
+  background: var(--sold);
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  text-align: center;
+  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+.sold-band[hidden] { display: none; }
+.dlg-photo .sold-band { width: 180%; padding: 16px 0; font-size: 1.35rem; transform: translate(-50%, -50%) rotate(33deg); }
+
 /* Last grid cell: enquiry card */
 .horse-cta {
   background: var(--ink);
@@ -596,6 +620,8 @@ html[data-lang="es"] [lang="en"]:not(html) { display: none !important; }
   grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
 }
 .dlg-photo {
+  position: relative;
+  overflow: hidden;
   background: var(--ink-2);
   display: grid;
   place-items: center;
