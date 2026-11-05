@@ -1,0 +1,4 @@
+Inter is licensed under the SIL Open Font License, Version 1.1
+(https://openfontlicense.org).
+
+- Inter: Copyright 2020 The Inter Project Authors (https://github.com/rsms/inter)
