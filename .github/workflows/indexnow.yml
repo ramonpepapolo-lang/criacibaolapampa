@@ -1,0 +1,33 @@
+# Tells Bing (and the other IndexNow search engines) when the site changes, so they read it straight away.
+name: IndexNow
+on:
+  push:
+    branches: [main]
+    paths: [index.html, sitemap.xml]
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Wait until the site has the key file
+        run: |
+          for i in $(seq 1 40); do
+            [ "$(curl -s https://criacibaolapampa.com/7a1c1c4530a4c6de4e0ec2ddc5ee85bd.txt || true)" = "7a1c1c4530a4c6de4e0ec2ddc5ee85bd" ] && echo ready && exit 0
+            sleep 15
+          done
+      - name: Send the page list
+        run: |
+          python3 - <<'PY'
+          import json, urllib.request
+          body = json.dumps({"host": "criacibaolapampa.com", "key": "7a1c1c4530a4c6de4e0ec2ddc5ee85bd",
+                             "keyLocation": "https://criacibaolapampa.com/7a1c1c4530a4c6de4e0ec2ddc5ee85bd.txt",
+                             "urlList": ["https://criacibaolapampa.com/"]}).encode()
+          ok = 0
+          for api in ["https://api.indexnow.org/indexnow", "https://www.bing.com/indexnow", "https://yandex.com/indexnow"]:
+              try:
+                  r = urllib.request.urlopen(urllib.request.Request(api, data=body, headers={"Content-Type": "application/json; charset=utf-8"}), timeout=30)
+                  print(api, r.status); ok += r.status in (200, 202)
+              except Exception as e:
+                  print(api, "error:", getattr(e, "code", ""), str(e)[:200])
+          raise SystemExit(0 if ok else "no search engine accepted the list")
+          PY
